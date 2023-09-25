@@ -1,0 +1,51 @@
+{
+    "title": "List type of Container",
+    "title_requests": "List of approval-needed requests",
+    "code": "No",
+    "container_no": "Code",
+    "type_of_container": "Type of Container",
+    "detail": "Details",
+    "status":"Status",
+    "teus": "Teus",
+    "date_created": "Date Created",
+    "creator": "Creator",
+    
+    "information_add_type_of_container": "Add new type of container",
+    "information_edit_type_of_container": "Edit type of container",
+    
+    "container_type_code_form": {
+        "title": "Container Type Code",
+        "placeholder": "Enter container type code",
+        "error_required": "Please enter input container type code!"
+    },
+
+    "status_form": {
+        "title": "Status",
+        "placeholder": "Select status",
+        "error_required": "Please select status!"
+    },
+
+    "name_form": {
+        "title": "Container Type Name",
+        "placeholder": "Enter container type name",
+        "error_required": "Please enter container type name!"
+    },
+
+    "teus_form": {
+        "title": "Teus",
+        "placeholder": "Enter teus",
+        "error_required": "Please enter teus!"
+    },
+
+    "details_en_form": {
+        "title": "English Detail",
+        "placeholder": "Enter english detail",
+        "error_required": "Please enter english detail!"
+    },
+
+    "details_vn_form": {
+        "title": "Vietnamese detail",
+        "placeholder": "Enter vietnamese detail",
+        "error_required": "Please enter vietnamese detail!"
+    }
+}

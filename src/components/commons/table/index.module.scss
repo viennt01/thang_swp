@@ -1,0 +1,28 @@
+.table {
+  :global {
+    .ant-table-sticky-scroll {
+      display: none;
+    }
+    .ant-table-column-title, th.ant-table-cell {
+      text-transform: uppercase;
+    }
+    td.ant-table-cell:hover{
+      cursor: pointer;
+    }
+    .ant-pro-table-column-setting-overlay {
+      width: 240px;
+      .ant-popover-inner-content{
+        width: 100%;
+        .ant-pro-table-column-setting-list-item-title {
+          max-width: 200px
+        }
+      }
+    }
+  }
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+

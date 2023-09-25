@@ -1,0 +1,49 @@
+{
+    "title": "Danh sách địa điểm",
+    "port_no": "Stt",
+    "code": "Mã",
+    "name": "Tên",
+    "country_name": "Quốc gia",
+    "type_of_port": "Loại địa điểm",
+    "address": "Địa chỉ",
+    "company":"Công ty quản lý",
+    "status":"Trạng thái",
+    
+    "information_add_port": "Thêm mới",
+    "information_edit_port": "Chỉnh sửa",
+
+    "port_code": {
+        "title": "Mã",
+        "placeholder": "Nhập mã",
+        "error_required": "Vui lòng nhập mã"
+    },
+    "port_name": {
+        "title": "Tên",
+        "placeholder": "Nhập tên",
+        "error_required": "Vui lòng nhập tên"
+    },
+    "type_port": {
+        "title": "Loại",
+        "placeholder": "Nhập loại",
+        "error_required": "Vui lòng nhập loại"
+    },
+    "country": {
+        "title": "Quốc gia",
+        "placeholder": "Nhập quốc gia",
+        "error_required": "Vui lòng nhập quốc gia"
+    },
+    "status_port": {
+        "title": "Trạng thái",
+        "placeholder": "Chọn trạng thái",
+        "error_required": "Vui lòng chọn trạng thái"
+    },
+    "address_port": {
+        "title": "Địa chỉ",
+        "placeholder": "Nhập địa chỉ",
+        "error_required": "Vui lòng nhập địa chỉ"
+    },
+    "description": {
+        "title": "Chi tiết",
+        "placeholder": "Nhập chi tiết"
+    }
+}
