@@ -10,7 +10,7 @@ import { appWithTranslation } from 'next-i18next';
 import COLORS from '@/constant/color';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
+import 'semantic-ui-css/semantic.min.css';
 const inter = Inter({ subsets: ['latin'] });
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
   P,

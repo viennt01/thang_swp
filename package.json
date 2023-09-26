@@ -32,6 +32,7 @@
     "react-dom": "18.2.0",
     "react-highlight-words": "^0.20.0",
     "react-i18next": "12.2.0",
+    "react-infinite-scroll-component": "^6.1.0",
     "sass": "^1.62.1",
     "semantic-ui-css": "^2.5.0",
     "semantic-ui-react": "^2.1.4",
