@@ -1,21 +1,21 @@
-import Home from '@/components/home';
+import Profile from '@/components/profile';
 import withAuthentication from '@/hook/useAuthentication';
 import { Inter } from '@next/font/google';
 import Head from 'next/head';
 
 const inter = Inter({ subsets: ['latin'] });
 
-function HomePage() {
+function ProfilePage() {
   return (
     <>
       <Head>
-        <title>ASL | HOME</title>
+        <title>FPT | PROFILE</title>
       </Head>
       <main className={inter.className}>
-        <Home />
+        <Profile />
       </main>
     </>
   );
 }
 
-export default withAuthentication(HomePage);
+export default withAuthentication(ProfilePage);

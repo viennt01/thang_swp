@@ -10,7 +10,6 @@ import { appWithTranslation } from 'next-i18next';
 import COLORS from '@/constant/color';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useLocaleAnt } from '@/constant';
 
 const inter = Inter({ subsets: ['latin'] });
 export type NextPageWithLayout<P = Record<string, unknown>, IP = P> = NextPage<
@@ -26,7 +25,6 @@ type AppPropsWithLayout = AppProps & {
 
 function App({ Component, pageProps }: AppPropsWithLayout) {
   const L = Component.Layout ? Component.Layout : AppLayout;
-  const localeApp = useLocaleAnt();
   const queryClient = new QueryClient({
     defaultOptions: {
       queries: {
@@ -37,7 +35,6 @@ function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <ConfigProvider
-      locale={localeApp}
       theme={{
         token: {
           colorPrimary: COLORS.GREEN,
