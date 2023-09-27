@@ -24,11 +24,12 @@ import { MenuInfo } from 'rc-menu/lib/interface';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { ROUTERS } from '@/constant/router';
+import ModalPost from './modal-post';
 
-const { Text } = Typography;
 const { Header, Content, Footer, Sider } = Layout;
 export const HEADER_HEIGHT = 64;
 export const FOOTER_HEIGHT = 38;
+const { Text } = Typography;
 
 interface Props {
   children: React.ReactNode;
@@ -85,6 +86,7 @@ export function AppLayout(props: Props) {
             />
           </Space>
           <Space style={{ cursor: 'pointer' }}>
+            <ModalPost />
             <div>
               <div
                 onClick={onClickShowPopupAvatar}
@@ -168,6 +170,7 @@ export function AppLayout(props: Props) {
           }}
         >
           <main>{props.children}</main>
+
           <FloatButton.Group
             trigger="hover"
             type="primary"
