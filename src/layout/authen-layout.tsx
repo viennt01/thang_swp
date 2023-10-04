@@ -45,7 +45,7 @@ export function AppLayout(props: Props) {
   }
 
   const handleLogout = () => {
-    appLocalStorage.remove(LOCAL_STORAGE_KEYS.TOKEN);
+    appLocalStorage.remove(LOCAL_STORAGE_KEYS.ID_USER);
     router.push(ROUTERS.LOGIN);
   };
 

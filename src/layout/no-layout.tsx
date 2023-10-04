@@ -50,8 +50,14 @@ export function PageWithNoLayout(props: Props) {
           </Space>
           <Space style={{ cursor: 'pointer' }}>
             <div>
-              <Button>SIGN IN</Button>
-              <Button style={{ marginLeft: '8px' }} type="primary">
+              <Button onClick={() => router.push(ROUTERS.LOGIN)}>
+                SIGN IN
+              </Button>
+              <Button
+                onClick={() => router.push(ROUTERS.REGISTER)}
+                style={{ marginLeft: '8px' }}
+                type="primary"
+              >
                 SIGN UP
               </Button>
             </div>

@@ -13,10 +13,11 @@ import { API_AUTHENTICATE } from './endpoint';
 import { LANGUAGE } from '@/constant';
 
 type RawAxiosHeaders = Record<string, AxiosHeaderValue | AxiosHeaders>;
-export interface ResponseWithPayload<R> {
+export interface ResponseWithPayload<> {
+  [x: string]: string;
   status: STATUS_CODE;
   message: string;
-  data: R;
+  // data: R;
 }
 
 export interface ResponseWithoutPayload {
@@ -92,16 +93,18 @@ const apiClient = axios.create({
 });
 
 apiClient.interceptors.request.use((config) => {
-  const accessToken = appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN);
+  const accessToken = appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER);
   config.headers.languageName =
     appLocalStorage.get(LOCAL_STORAGE_KEYS.LANGUAGE) || LANGUAGE.EN;
   if (config.url === `${getGateway()}${API_AUTHENTICATE.LOGIN}`) {
     return config;
   }
   if (config.url === `${getGateway()}${API_AUTHENTICATE.REFRESH_TOKEN}`) {
-    config.headers.accessToken = appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN);
+    config.headers.accessToken = appLocalStorage.get(
+      LOCAL_STORAGE_KEYS.ID_USER
+    );
     config.headers.Authorization = `Bearer ${appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.TOKEN
+      LOCAL_STORAGE_KEYS.ID_USER
     )}`;
     config.headers.refreshToken = appLocalStorage.get(
       LOCAL_STORAGE_KEYS.REFRESH_TOKEN
@@ -117,7 +120,7 @@ apiClient.interceptors.request.use((config) => {
   if (accessToken) {
     config.headers.accessToken = accessToken;
     config.headers.Authorization = `Bearer ${appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.TOKEN
+      LOCAL_STORAGE_KEYS.ID_USER
     )}`;
   }
   return config;
@@ -133,7 +136,7 @@ apiClient.interceptors.response.use(
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
-      appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN)
+      appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER)
     ) {
       originalRequest._retry = 3;
       if (!isRefreshing) {
@@ -142,7 +145,7 @@ apiClient.interceptors.response.use(
           const response = await apiClient.post(
             `${getGateway()}${API_AUTHENTICATE.REFRESH_TOKEN}`,
             {
-              accessToken: appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN),
+              accessToken: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
               refreshToken: appLocalStorage.get(
                 LOCAL_STORAGE_KEYS.REFRESH_TOKEN
               ),
@@ -153,7 +156,7 @@ apiClient.interceptors.response.use(
           isRefreshing = false;
           const newAccessToken = response.data.data.accessToken;
           const newRefreshToken = response.data.data.refreshToken;
-          appLocalStorage.set(LOCAL_STORAGE_KEYS.TOKEN, newAccessToken);
+          appLocalStorage.set(LOCAL_STORAGE_KEYS.ID_USER, newAccessToken);
           appLocalStorage.set(
             LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
             newRefreshToken
@@ -164,7 +167,7 @@ apiClient.interceptors.response.use(
           return apiClient(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
-          appLocalStorage.remove(LOCAL_STORAGE_KEYS.TOKEN);
+          appLocalStorage.remove(LOCAL_STORAGE_KEYS.ID_USER);
           router.replace(ROUTERS.LOGIN);
         }
       } else {

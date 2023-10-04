@@ -7,12 +7,35 @@ import { LockOutlined, MailOutlined } from '@ant-design/icons';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import router from 'next/router';
+import { useMutation } from '@tanstack/react-query';
+import { LoginForm } from './interface';
+import { login } from './fetcher';
+import { errorToast, successToast } from '@/hook/toast';
+import { API_MESSAGE } from '@/constant/message';
 export default function LoginPage() {
   const [formLogin] = Form.useForm();
 
-  const onFinish = () => {
-    appLocalStorage.set(LOCAL_STORAGE_KEYS.TOKEN, '1');
-    router.push(ROUTERS.HOME);
+  const loginMutation = useMutation({
+    mutationFn: (body: LoginForm) => {
+      return login(body);
+    },
+  });
+
+  const onFinish = (value: LoginForm) => {
+    loginMutation.mutate(value, {
+      onSuccess: function (data) {
+        appLocalStorage.set(LOCAL_STORAGE_KEYS.ID_USER, data.userID as string);
+        appLocalStorage.set(
+          LOCAL_STORAGE_KEYS.NAME_USER,
+          data.firstName as string
+        );
+        router.push(ROUTERS.HOME);
+        successToast('Login Success');
+      },
+      onError() {
+        errorToast(API_MESSAGE.ERROR);
+      },
+    });
   };
 
   return (
@@ -39,13 +62,12 @@ export default function LoginPage() {
         <Form
           form={formLogin}
           name="formLogin"
-          // initialValues={initialValues}
           onFinish={onFinish}
           style={{ width: '100%' }}
         >
           <div className={style.titleSignIn}>
             <h2>Sign in</h2>
-            <h2>Sign in</h2>
+            <h2 style={{ margin: '0px' }}>Sign in</h2>
           </div>
           <Form.Item
             name="email"
@@ -86,6 +108,7 @@ export default function LoginPage() {
           </div>
           <Button
             className={style.btnLogin}
+            loading={loginMutation.isLoading}
             htmlType="submit"
             style={{ width: '100%', marginTop: '15px' }}
           >

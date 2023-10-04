@@ -9,7 +9,7 @@ export default function withAuthentication(ChildComponent: () => JSX.Element) {
     const router = useRouter();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-      const token = appLocalStorage.get(LOCAL_STORAGE_KEYS.TOKEN);
+      const token = appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER);
       if (!token) {
         if (router.pathname !== ROUTERS.LOGIN) {
           router.push(ROUTERS.LOGIN);

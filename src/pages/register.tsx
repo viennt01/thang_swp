@@ -1,28 +1,25 @@
-import withAuthentication from '@/hook/useAuthentication';
 import { PageWithNoLayout } from '@/layout/no-layout';
-import L from '@/components/login';
 import Head from 'next/head';
 import { Inter } from '@next/font/google';
+import Register from '@/components/register';
 
 const inter = Inter({ subsets: ['latin'] });
 
-function Login() {
+function RegisterPage() {
   return (
     <>
       <Head>
-        <title>FPT | LOGIN</title>
+        <title>FPT | REGISTER</title>
       </Head>
       <main className={inter.className}>
-        <L />
+        <Register />
       </main>
     </>
   );
 }
 
-const LoginPage = withAuthentication(Login);
-
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-LoginPage.Layout = PageWithNoLayout;
+RegisterPage.Layout = PageWithNoLayout;
 
-export default LoginPage;
+export default RegisterPage;
