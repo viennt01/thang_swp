@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import AuthenLayout from './authen-layout.module.scss';
@@ -25,6 +25,7 @@ import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { ROUTERS } from '@/constant/router';
 import ModalPost from './modal-post';
+import ModalPostForSale from './modal-post-for-sale';
 
 const { Header, Content, Footer, Sider } = Layout;
 export const HEADER_HEIGHT = 64;
@@ -35,6 +36,7 @@ interface Props {
   children: React.ReactNode;
 }
 export function AppLayout(props: Props) {
+  const [userName, setUserName] = useState('');
   const router = useRouter();
   const [classActiveAvatarPopup, setClassActiveAvatarPopup] = useState('');
   const [selectedKey, setSelectedKey] = useState(ROUTERS.HOME);
@@ -53,6 +55,9 @@ export function AppLayout(props: Props) {
     setSelectedKey(path.key);
     router.push(path.key);
   };
+  useEffect(() => {
+    setUserName(appLocalStorage.get(LOCAL_STORAGE_KEYS.NAME_USER));
+  }, []);
 
   return (
     <Layout style={{ minHeight: '100vh' }}>
@@ -86,6 +91,7 @@ export function AppLayout(props: Props) {
             />
           </Space>
           <Space style={{ cursor: 'pointer' }}>
+            <ModalPostForSale />
             <ModalPost />
             <div>
               <div
@@ -100,7 +106,7 @@ export function AppLayout(props: Props) {
                 >
                   T
                 </Avatar>
-                Thang
+                {userName}
               </div>
               <div
                 className={`${AuthenLayout.userMenu} ${

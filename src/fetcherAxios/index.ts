@@ -99,24 +99,7 @@ apiClient.interceptors.request.use((config) => {
   if (config.url === `${getGateway()}${API_AUTHENTICATE.LOGIN}`) {
     return config;
   }
-  if (config.url === `${getGateway()}${API_AUTHENTICATE.REFRESH_TOKEN}`) {
-    config.headers.accessToken = appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.ID_USER
-    );
-    config.headers.Authorization = `Bearer ${appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.ID_USER
-    )}`;
-    config.headers.refreshToken = appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.REFRESH_TOKEN
-    );
-    config.headers.ipAddress = appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.IP_ADDRESS
-    );
-    config.headers.deviceName = appLocalStorage.get(
-      LOCAL_STORAGE_KEYS.DEVICE_NAME
-    );
-    return config;
-  }
+
   if (accessToken) {
     config.headers.accessToken = accessToken;
     config.headers.Authorization = `Bearer ${appLocalStorage.get(
@@ -142,28 +125,7 @@ apiClient.interceptors.response.use(
       if (!isRefreshing) {
         isRefreshing = true;
         try {
-          const response = await apiClient.post(
-            `${getGateway()}${API_AUTHENTICATE.REFRESH_TOKEN}`,
-            {
-              accessToken: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
-              refreshToken: appLocalStorage.get(
-                LOCAL_STORAGE_KEYS.REFRESH_TOKEN
-              ),
-              ipAddress: appLocalStorage.get(LOCAL_STORAGE_KEYS.IP_ADDRESS),
-              deviceName: appLocalStorage.get(LOCAL_STORAGE_KEYS.DEVICE_NAME),
-            }
-          );
           isRefreshing = false;
-          const newAccessToken = response.data.data.accessToken;
-          const newRefreshToken = response.data.data.refreshToken;
-          appLocalStorage.set(LOCAL_STORAGE_KEYS.ID_USER, newAccessToken);
-          appLocalStorage.set(
-            LOCAL_STORAGE_KEYS.REFRESH_TOKEN,
-            newRefreshToken
-          );
-          originalRequest.headers.accessToken = newAccessToken;
-          originalRequest.headers.refreshToken = newRefreshToken;
-
           return apiClient(originalRequest);
         } catch (refreshError) {
           isRefreshing = false;
@@ -244,7 +206,7 @@ export const deleteGW =
 
 export const uploadFile =
   ({ data, headers, gw, timeout }: CRUDProps<FormData>) =>
-  async (url: string) => {
+  async (url: string): Promise<any> => {
     const axiosPromise = requestWithTimeout(
       apiClient.post(`${getGateway(gw)}${url}`, data, {
         headers: {

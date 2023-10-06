@@ -11,16 +11,23 @@ import {
   Button,
   Select,
   Spin,
+  DatePicker,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { GlobalOutlined, InboxOutlined, FormOutlined } from '@ant-design/icons';
+import {
+  GlobalOutlined,
+  InboxOutlined,
+  FormOutlined,
+  PhoneOutlined,
+  HomeOutlined,
+} from '@ant-design/icons';
 import Dragger from 'antd/lib/upload/Dragger';
 import { useRouter } from 'next/router';
 import { ROUTERS } from '@/constant/router';
 import { InternalFieldProps } from 'rc-field-form/lib/Field';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { API_MASTER_DATA } from '@/fetcherAxios/endpoint';
-import { CreateNewFeed, getTypeGoods } from './fetcher';
+import { CreateNewFeedForSale, getTypeGoods } from './fetcher';
 import { errorToast, successToast } from '@/hook/toast';
 import { API_MESSAGE } from '@/constant/message';
 import { appLocalStorage } from '@/utils/localstorage';
@@ -29,17 +36,17 @@ import { storage } from '../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 const { TextArea } = Input;
 const { Title, Text } = Typography;
+const dateFormat = 'YYYY/MM/DD';
 
-export default function ModalPost() {
+export default function ModalPostForSale() {
   const [form] = Form.useForm();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
   // State to store uploaded file
   const [linkFile, setLinkFile] = useState<any>('');
-  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [isLoadingImage, setIsLoadingImage] = useState(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [userName, setUserName] = useState('');
-
   const showModal = () => {
     form.resetFields();
     setLinkFile('');
@@ -71,7 +78,7 @@ export default function ModalPost() {
   });
 
   const createNewFeedA = useMutation({
-    mutationFn: (value: any) => CreateNewFeed(value),
+    mutationFn: (value: any) => CreateNewFeedForSale(value),
     onSuccess: () => {
       successToast('New feed created successfully');
       setIsModalOpen(false);
@@ -90,6 +97,10 @@ export default function ModalPost() {
       title: formValues.Title,
       content: formValues.Content,
       listImage: [linkFile],
+      address: formValues.Address,
+      price: formValues.Price,
+      phoneNumber: formValues.PhoneNumber,
+      birthDate: formValues.BirthDated.valueOf(),
     };
     createNewFeedA.mutate(data);
   };
@@ -142,14 +153,14 @@ export default function ModalPost() {
         onClick={() => showModal()}
         style={{ display: router.asPath === ROUTERS.HOME ? '' : 'none' }}
       >
-        POST
+        POST FOR SALE
       </Button>
       <Modal
         title={
           <Row justify={'center'}>
             <Col>
               <Title level={3} style={{ margin: '-10px 0' }}>
-                CREATE NEW FEED
+                CREATE NEW FEED FOR SALE
               </Title>
             </Col>
             <hr style={{ width: '90%', marginTop: '16px' }} />
@@ -173,7 +184,9 @@ export default function ModalPost() {
             </Avatar>
           </div>
           <Space size={1} direction="vertical">
-            <Title level={4}>{userName}</Title>
+            <Title level={4}>
+              <Title level={4}>{userName}</Title>
+            </Title>
             <Text type="secondary">
               <GlobalOutlined /> Public
             </Text>
@@ -189,11 +202,11 @@ export default function ModalPost() {
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter a title',
+                    message: 'Please input your a title',
                   },
                 ]}
               >
-                <Input placeholder="Please enter a title" size="large" />
+                <Input placeholder="Please input your a title" size="large" />
               </Form.Item>
             </Col>
             <Col span={24}>
@@ -219,6 +232,85 @@ export default function ModalPost() {
                 />
               </Form.Item>
             </Col>
+            <Col lg={12} span={24}>
+              <Form.Item
+                name="Price"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your price',
+                  },
+                ]}
+                style={{ margin: 0 }}
+              >
+                <Input
+                  type="number"
+                  min={0}
+                  prefix="₫"
+                  suffix="VND"
+                  size="large"
+                  placeholder="Please input your price"
+                  allowClear
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="Address"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your address!',
+                  },
+                ]}
+                style={{ margin: 0 }}
+              >
+                <Input
+                  size="large"
+                  prefix={<HomeOutlined />}
+                  placeholder="Address"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="phoneNumber"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your phone number!',
+                  },
+                ]}
+                style={{ margin: 0 }}
+              >
+                <Input
+                  size="large"
+                  prefix={<PhoneOutlined />}
+                  placeholder="Phone Number"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={24}>
+              <Form.Item
+                name="BirthDated"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input your birth dated!',
+                  },
+                ]}
+                style={{ margin: 0 }}
+              >
+                <DatePicker
+                  placeholder="Please input your birth date"
+                  size="large"
+                  showToday
+                  format={dateFormat}
+                  style={{ width: '100%' }}
+                />
+              </Form.Item>
+            </Col>
+
             <Col span={24}>
               <Form.Item
                 name="Content"
@@ -226,14 +318,14 @@ export default function ModalPost() {
                 rules={[
                   {
                     required: true,
-                    message: 'Please enter content',
+                    message: 'Please input your content',
                   },
                 ]}
               >
                 <TextArea
                   size="large"
                   rows={3}
-                  placeholder="Please enter content!!!"
+                  placeholder="Please input your content!!!"
                 />
               </Form.Item>
             </Col>

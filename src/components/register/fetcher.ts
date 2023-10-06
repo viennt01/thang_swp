@@ -1,6 +1,6 @@
 import { post, ResponseWithPayload } from '@/fetcherAxios';
 import { ConfirmEmailForm, RegisterForm } from './interface';
-import { API_AUTHENTICATE } from '@/fetcher/endpoint';
+import { API_AUTHENTICATE } from '@/fetcherAxios/endpoint';
 
 export const register = (data: RegisterForm) => {
   return post<RegisterForm, ResponseWithPayload>({

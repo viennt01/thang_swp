@@ -1,4 +1,4 @@
-import { post, ResponseWithPayload } from '@/fetcherAxios';
+import { ResponseWithPayload, post } from '@/fetcherAxios';
 import { ConfirmEmailForm, ResetPasswordForm } from './interface';
 import { API_AUTHENTICATE } from '@/fetcher/endpoint';
 

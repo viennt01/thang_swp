@@ -27,7 +27,7 @@ export default function LoginPage() {
         appLocalStorage.set(LOCAL_STORAGE_KEYS.ID_USER, data.userID as string);
         appLocalStorage.set(
           LOCAL_STORAGE_KEYS.NAME_USER,
-          data.firstName as string
+          data.fullName as string
         );
         router.push(ROUTERS.HOME);
         successToast('Login Success');

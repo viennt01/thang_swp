@@ -1,5 +1,4 @@
 import style from './login.module.scss';
-import { Button, Col, Form, Input, Row } from 'antd';
 import Link from 'next/link';
 import { ROUTERS } from '@/constant/router';
 import { LockOutlined, MailOutlined } from '@ant-design/icons';
@@ -10,6 +9,7 @@ import { ConfirmEmailForm, ResetPasswordForm } from './interface';
 import { useState } from 'react';
 import router from 'next/router';
 import { useMutation } from '@tanstack/react-query';
+import { Button, Col, Form, Input, Row } from 'antd';
 
 export default function ForgotPassword() {
   const [formRegister] = Form.useForm();

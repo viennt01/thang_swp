@@ -2,9 +2,9 @@ const appEnv = process.env.APP_ENV || 'dev';
 const version = process.env.VERSION || '0.1.0';
 
 const API_MAIN_GW = {
-  dev: 'http://catdoglover.somee.com/api',
-  staging: 'http://catdoglover.somee.com/api',
-  production: 'http://catdoglover.somee.com/api',
+  dev: 'http://catdoglover.somee.com/',
+  staging: 'http://catdoglover.somee.com/',
+  production: 'http://catdoglover.somee.com/',
 };
 
 const env = {
