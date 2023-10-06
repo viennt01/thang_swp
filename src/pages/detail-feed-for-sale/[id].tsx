@@ -1,4 +1,4 @@
-import Home from '@/components/home';
+import DetailForSale from '@/components/fee-for-sale/detail';
 import withAuthentication from '@/hook/useAuthentication';
 import { Inter } from '@next/font/google';
 import Head from 'next/head';
@@ -9,10 +9,10 @@ function HomePage() {
   return (
     <>
       <Head>
-        <title>FPT | HOME</title>
+        <title>FPT | DETAIl</title>
       </Head>
       <main className={inter.className}>
-        <Home />
+        <DetailForSale />
       </main>
     </>
   );

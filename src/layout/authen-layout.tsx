@@ -175,9 +175,9 @@ export function AppLayout(props: Props) {
                 label: 'Home',
               },
               {
-                key: ROUTERS.PROFILE,
+                key: ROUTERS.FEE_FOR_SALE,
                 icon: <UserOutlined />,
-                label: 'My profile',
+                label: 'New feed for sale',
               },
             ]}
           />

@@ -16,6 +16,7 @@ export const API_NEW_FEEDS = {
   GET_NEWS_FEED: 'get-news-feed',
   GET_NEWS_FEED_BY_ID: 'get-news-feed-by-id',
   GET_NEWS_FEED_FOR_SALE: 'get-news-feed-for-sale',
+  GET_NEWS_FEED_FOR_SALE_BY_ID: 'get-news-feed-for-sale-by-id',
   LIKE_NEWS_FEED: 'like-news-feed',
   COMMENT_NEWS_FEED: 'comment-news-feed',
 };
