@@ -40,6 +40,8 @@ export function AppLayout(props: Props) {
   const router = useRouter();
   const [classActiveAvatarPopup, setClassActiveAvatarPopup] = useState('');
   const [selectedKey, setSelectedKey] = useState(ROUTERS.HOME);
+  const [randomAlphabet, setRandomAlphabet] = useState('');
+
   function onClickShowPopupAvatar() {
     classActiveAvatarPopup === 'active'
       ? setClassActiveAvatarPopup('')
@@ -57,6 +59,18 @@ export function AppLayout(props: Props) {
   };
   useEffect(() => {
     setUserName(appLocalStorage.get(LOCAL_STORAGE_KEYS.NAME_USER));
+  }, []);
+  function generateRandomAlphabetString(length: number): string {
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * alphabet.length);
+      result += alphabet.charAt(randomIndex);
+    }
+    return result;
+  }
+  useEffect(() => {
+    setRandomAlphabet(generateRandomAlphabetString(1));
   }, []);
 
   return (
@@ -104,7 +118,7 @@ export function AppLayout(props: Props) {
                     marginRight: '10px',
                   }}
                 >
-                  T
+                  {randomAlphabet}
                 </Avatar>
                 {userName}
               </div>

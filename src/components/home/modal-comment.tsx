@@ -1,104 +1,162 @@
-import { Avatar, Space, Form, Input } from 'antd';
-import React from 'react';
+import {
+  Avatar,
+  Space,
+  Form,
+  Input,
+  Typography,
+  Image,
+  Spin,
+  Row,
+  Col,
+} from 'antd';
+import React, { ChangeEvent, useEffect } from 'react';
 import { Comment } from 'semantic-ui-react';
-import { LikeOutlined, MessageOutlined, SendOutlined } from '@ant-design/icons';
+import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CommentNewFeed, LikeNewFeed } from './fetcher';
+import { appLocalStorage } from '@/utils/localstorage';
+import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
+import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
+import { formatDate } from '@/utils/format';
 
 const { TextArea } = Input;
-
-export default function ModalComment() {
+const { Title, Text, Paragraph } = Typography;
+interface Props {
+  modalData: any;
+  loadingData: any;
+}
+export default function ModalComment({ modalData, loadingData }: Props) {
+  const [form] = Form.useForm();
+  const queryClient = useQueryClient();
   const handleTextAreaPressEnter = (e: { key: string }) => {
-    // Kiểm tra xem phím Enter đã được ấn hay không
     if (e.key === 'Enter') {
-      // Thực hiện xử lý gửi biểu mẫu ở đây
-      // Ví dụ: dispatch action hoặc gọi hàm xử lý gửi dữ liệu
-      console.log('Enter key pressed. Submitting form...');
+      const data = {
+        userID: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
+        newsFeedID: modalData?.newsFeedID,
+        content: form.getFieldValue('comment'),
+      };
+      commentMutation.mutate(data);
     }
   };
+
+  const handleInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+    form.setFieldValue('comment', e.target.value);
+  };
+  const likeMutation = useMutation({
+    mutationFn: (body: any) => {
+      return LikeNewFeed(body);
+    },
+    onSuccess: (body: any) => {
+      console.log(body);
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_BY_ID],
+      });
+    },
+  });
+
+  const commentMutation = useMutation({
+    mutationFn: (body: any) => {
+      return CommentNewFeed(body);
+    },
+    onSuccess: (body: any) => {
+      console.log(body);
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_BY_ID],
+      });
+      form.resetFields();
+    },
+  });
+  useEffect(() => {
+    form.resetFields();
+  }, [modalData]);
+
   return (
     <>
-      <Space size={16}>
-        <Space
-        // onClick={onClick}
-        // style={spaceStyle}
-        // onMouseEnter={() => setIsHovered(true)}
-        // onMouseLeave={() => setIsHovered(false)}
-        >
-          {React.createElement(LikeOutlined)}156
-        </Space>
-        <Space
-        // onClick={onClick}
-        // style={spaceStyle}
-        // onMouseEnter={() => setIsHovered(true)}
-        // onMouseLeave={() => setIsHovered(false)}
-        >
-          {React.createElement(MessageOutlined)}2
-        </Space>
-      </Space>
-      <Comment.Group>
-        <Comment>
-          {/* <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" /> */}
-          <Space size={10}>
-            <Space style={{ display: 'flex', top: '0px' }}>
-              <Avatar size={30}>T</Avatar>
-            </Space>
-            <Comment.Content>
-              <Comment.Author as="a">Matt</Comment.Author>
-              <Comment.Metadata>
-                <div>Today at 5:42PM</div>
-              </Comment.Metadata>
-              <Comment.Text>How artistic!</Comment.Text>
-              <Comment.Actions>
-                <Comment.Action>Reply</Comment.Action>
-              </Comment.Actions>
-            </Comment.Content>
-          </Space>
-        </Comment>
-
-        <Comment>
-          <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/elliot.jpg" />
-          <Comment.Content>
-            <Comment.Author as="a">Elliot Fu</Comment.Author>
-            <Comment.Metadata>
-              <div>Yesterday at 12:30AM</div>
-            </Comment.Metadata>
-            <Comment.Text>
-              <p>This has been very useful for my research. Thanks as well!</p>
-            </Comment.Text>
-            <Comment.Actions>
-              <Comment.Action>Reply</Comment.Action>
-            </Comment.Actions>
-          </Comment.Content>
-          <Comment.Group>
-            <Comment>
-              <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/jenny.jpg" />
-              <Comment.Content>
-                <Comment.Author as="a">Jenny Hess</Comment.Author>
-                <Comment.Metadata>
-                  <div>Just now</div>
-                </Comment.Metadata>
-                <Comment.Text>Elliot you are always so right :)</Comment.Text>
-                <Comment.Actions>
-                  <Comment.Action>Reply</Comment.Action>
-                </Comment.Actions>
-              </Comment.Content>
-            </Comment>
-          </Comment.Group>
-        </Comment>
-
-        <Form>
-          <Form.Item name="comment">
-            <TextArea rows={2} onPressEnter={handleTextAreaPressEnter} />
-            <SendOutlined
+      <Row justify={'center'} style={{ display: !loadingData ? 'none' : '' }}>
+        <Col>
+          <Spin />
+        </Col>
+      </Row>
+      <div style={{ display: loadingData ? 'none' : '' }}>
+        <Space direction="horizontal" style={{ marginBottom: '16px' }}>
+          <div>
+            <Avatar
               style={{
-                position: 'absolute',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                right: '8px',
+                verticalAlign: 'middle',
+                marginRight: '10px',
               }}
-            />
-          </Form.Item>
-        </Form>
-      </Comment.Group>
+              size={50}
+            >
+              T
+            </Avatar>
+          </div>
+          <Space size={1} direction="vertical">
+            <Title level={4}>{modalData?.userName}</Title>
+            <Text type="secondary">
+              {formatDate(Number(modalData?.insertDated))}
+            </Text>
+          </Space>
+        </Space>
+        <Paragraph ellipsis={{ rows: 3, expandable: true, symbol: 'more' }}>
+          {modalData?.content}
+        </Paragraph>
+        <Image
+          alt="anh"
+          style={{ marginBottom: '16px' }}
+          src={modalData?.images[0].urlImage}
+        />
+        <Space size={16}>
+          <Space
+            onClick={() => {
+              const data = {
+                userID: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
+                newsFeedID: modalData?.newsFeedID,
+              };
+              likeMutation.mutate(data);
+            }}
+          >
+            <LikeOutlined style={{ cursor: 'pointer' }} />
+            {modalData?.likeQuantity}
+          </Space>
+          <Space>
+            <MessageOutlined />
+          </Space>
+        </Space>
+        <Comment.Group>
+          {modalData?.commentDTOs?.map((item: any) => {
+            return (
+              <Comment key={item?.commentID}>
+                {/* <Comment.Avatar src="https://react.semantic-ui.com/images/avatar/small/matt.jpg" /> */}
+                <Space size={10}>
+                  <Space
+                    style={{ display: 'flex', top: '0px', marginTop: '-10px' }}
+                  >
+                    <Avatar size={35}>T</Avatar>
+                  </Space>
+                  <Comment.Content>
+                    <Comment.Author as="a">{item?.userName}</Comment.Author>
+                    <Comment.Metadata>
+                      <div>{formatDate(Number(item?.insertDated))}</div>
+                    </Comment.Metadata>
+                    <Comment.Text>{item?.content}</Comment.Text>
+                  </Comment.Content>
+                </Space>
+              </Comment>
+            );
+          })}
+          <Form form={form}>
+            <Form.Item name="comment">
+              <TextArea
+                rows={2}
+                onPressEnter={handleTextAreaPressEnter}
+                onChange={(e: any) => {
+                  handleInputChange(e);
+                }}
+              />
+            </Form.Item>
+          </Form>
+        </Comment.Group>
+      </div>
     </>
   );
 }

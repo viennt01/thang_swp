@@ -18,8 +18,8 @@ import Dragger from 'antd/lib/upload/Dragger';
 import { useRouter } from 'next/router';
 import { ROUTERS } from '@/constant/router';
 import { InternalFieldProps } from 'rc-field-form/lib/Field';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { API_MASTER_DATA } from '@/fetcherAxios/endpoint';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { API_MASTER_DATA, API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { CreateNewFeed, getTypeGoods } from './fetcher';
 import { errorToast, successToast } from '@/hook/toast';
 import { API_MESSAGE } from '@/constant/message';
@@ -31,6 +31,7 @@ const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 export default function ModalPost() {
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -76,6 +77,9 @@ export default function ModalPost() {
       successToast('New feed created successfully');
       setIsModalOpen(false);
       setIsLoadingSubmit(false);
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_BY_ID],
+      });
     },
     onError: () => {
       errorToast(API_MESSAGE.ERROR);
