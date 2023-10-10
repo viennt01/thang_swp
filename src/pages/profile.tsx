@@ -9,7 +9,7 @@ function ProfilePage() {
   return (
     <>
       <Head>
-        <title>FPT | PROFILE</title>
+        <title>PET | PROFILE</title>
       </Head>
       <main className={inter.className}>
         <Profile />

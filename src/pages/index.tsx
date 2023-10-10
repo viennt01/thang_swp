@@ -10,7 +10,7 @@ function Login() {
   return (
     <>
       <Head>
-        <title>FPT | LOGIN</title>
+        <title>PET | LOGIN</title>
       </Head>
       <main className={inter.className}>
         <L />

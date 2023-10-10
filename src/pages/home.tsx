@@ -9,7 +9,7 @@ function HomePage() {
   return (
     <>
       <Head>
-        <title>FPT | HOME</title>
+        <title>PET | HOME</title>
       </Head>
       <main className={inter.className}>
         <Home />

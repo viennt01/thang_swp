@@ -9,7 +9,7 @@ function HomePage() {
   return (
     <>
       <Head>
-        <title>FPT | DETAIl</title>
+        <title>PET | DETAIl</title>
       </Head>
       <main className={inter.className}>
         <DetailForSale />

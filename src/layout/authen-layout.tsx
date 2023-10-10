@@ -76,8 +76,8 @@ export function AppLayout(props: Props) {
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Head>
-        <link rel="favicon" href="/images/logo-fpt.png" />
-        <link rel="shortcut icon" href="/images/logo-fpt.png" />
+        <link rel="favicon" href="/images/logo.png" />
+        <link rel="shortcut icon" href="/images/logo.png" />
       </Head>
       <Header
         style={{
@@ -99,7 +99,7 @@ export function AppLayout(props: Props) {
                 height: '54px',
                 marginTop: '-15px',
               }}
-              src="/images/logo-fpt.png"
+              src="/images/logo.png"
               onClick={() => router.push(ROUTERS.HOME)}
               alt="logo"
             />

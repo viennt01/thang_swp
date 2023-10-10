@@ -9,7 +9,7 @@ function FeeForSalePage() {
   return (
     <>
       <Head>
-        <title>FPT | FEE FOR SALE</title>
+        <title>PET | FEE FOR SALE</title>
       </Head>
       <main className={inter.className}>
         <FeeForSale />

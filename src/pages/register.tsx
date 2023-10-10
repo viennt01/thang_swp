@@ -9,7 +9,7 @@ function RegisterPage() {
   return (
     <>
       <Head>
-        <title>FPT | REGISTER</title>
+        <title>PET | REGISTER</title>
       </Head>
       <main className={inter.className}>
         <Register />

@@ -9,7 +9,7 @@ function RegisterPage() {
   return (
     <>
       <Head>
-        <title>FPT | FORGOT PASSWORD</title>
+        <title>PET | FORGOT PASSWORD</title>
       </Head>
       <main className={inter.className}>
         <ForgotPassword />

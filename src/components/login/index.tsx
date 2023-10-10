@@ -56,7 +56,7 @@ export default function LoginPage() {
         }}
       >
         <Link href={ROUTERS.LOGIN}>
-          <img src="/images/logo-fpt.png" alt="" className={style.signinLogo} />
+          <img src="/images/logo.png" alt="" className={style.signinLogo} />
         </Link>
 
         <Form
