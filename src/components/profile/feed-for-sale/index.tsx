@@ -43,7 +43,7 @@ export default function FeeForSale() {
               style={{ cursor: 'pointer' }}
               onClick={() => handleChangePageDetail(item?.newsFeedID)}
             >
-              <Col span={24}>
+              <Col span={24} style={{ marginBottom: '26px' }}>
                 <Row gutter={24}>
                   <Col span={8}>
                     <Image
