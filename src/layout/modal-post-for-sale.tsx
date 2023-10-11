@@ -19,6 +19,7 @@ import {
   InboxOutlined,
   FormOutlined,
   PhoneOutlined,
+  UserOutlined,
   HomeOutlined,
 } from '@ant-design/icons';
 import Dragger from 'antd/lib/upload/Dragger';
@@ -179,9 +180,8 @@ export default function ModalPostForSale() {
                 marginRight: '10px',
               }}
               size={50}
-            >
-              T
-            </Avatar>
+              icon={<UserOutlined />}
+            />
           </div>
           <Space size={1} direction="vertical">
             <Title level={4}>

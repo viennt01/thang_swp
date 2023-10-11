@@ -13,13 +13,15 @@ export const CommentNewFeed = (data: any) => {
   })(API_NEW_FEEDS.COMMENT_NEWS_FEED);
 };
 
-export const GetNewFeedForSale = () => {
+export const GetNewFeedForSale = (data: any) => {
   return post<any, any>({
     data: {
+      userID: data,
       currentPage: 1,
       pageSize: 100,
+      search: '',
     },
-  })(API_NEW_FEEDS.GET_NEWS_FEED_FOR_SALE);
+  })(API_NEW_FEEDS.GET_NEWS_FEED_SALE_BY_ID_USER);
 };
 
 export const GetNewFeedForSaleById = (data: any) => {

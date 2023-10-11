@@ -1,24 +1,6 @@
 import { post } from '@/fetcherAxios';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 
-export const GetNewFeed = () => {
-  return post<any, any>({
-    data: {
-      search: '',
-      currentPage: 1,
-      pageSize: 100,
-    },
-  })(API_NEW_FEEDS.GET_NEWS_FEED);
-};
-
-export const GetNewFeedById = (data: any) => {
-  return post<any, any>({
-    data: {
-      id: data,
-    },
-  })(API_NEW_FEEDS.GET_NEWS_FEED_BY_ID);
-};
-
 export const LikeNewFeed = (data: any) => {
   return post<any, any>({
     data,
@@ -32,10 +14,19 @@ export const CommentNewFeed = (data: any) => {
 };
 
 export const GetNewFeedForSale = () => {
-  return post({
+  return post<any, any>({
     data: {
+      search: '',
       currentPage: 1,
       pageSize: 100,
     },
   })(API_NEW_FEEDS.GET_NEWS_FEED_FOR_SALE);
+};
+
+export const GetNewFeedForSaleById = (data: any) => {
+  return post<any, any>({
+    data: {
+      id: data,
+    },
+  })(API_NEW_FEEDS.GET_NEWS_FEED_FOR_SALE_BY_ID);
 };

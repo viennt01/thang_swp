@@ -23,6 +23,7 @@ import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { formatDate } from '@/utils/format';
 import style from './index.module.scss';
 import router from 'next/router';
+import { UserOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -30,7 +31,6 @@ const { Title, Text } = Typography;
 export default function DetailForSale() {
   const [form] = Form.useForm();
   const queryClient = useQueryClient();
-  const [randomAlphabet, setRandomAlphabet] = useState('');
   const [data, setData] = useState<any>();
   const { id } = router.query;
   const handleTextAreaPressEnter = (e: { key: string }) => {
@@ -86,20 +86,6 @@ export default function DetailForSale() {
     },
   });
 
-  function generateRandomAlphabetString(length: number): string {
-    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    let result = '';
-
-    for (let i = 0; i < length; i++) {
-      const randomIndex = Math.floor(Math.random() * alphabet.length);
-      result += alphabet.charAt(randomIndex);
-    }
-    return result;
-  }
-  useEffect(() => {
-    setRandomAlphabet(generateRandomAlphabetString(1));
-  }, []);
-
   useEffect(() => {
     form.resetFields();
   }, []);
@@ -125,7 +111,7 @@ export default function DetailForSale() {
                   <Card style={{ height: '400px', backgroundColor: '#F5F5F5' }}>
                     <div className={style.contentContainer}>
                       <Image
-                        src={data?.images[0].urlImage}
+                        src={data?.listImages[0]?.urlImage}
                         alt="anh"
                         height={350}
                         width={'auto'}
@@ -193,7 +179,7 @@ export default function DetailForSale() {
                   <Col span={24} style={{ marginBottom: '32px' }}>
                     <Row>
                       <Col span={6}>
-                        <Avatar size={64}>{randomAlphabet}</Avatar>
+                        <Avatar size={64} icon={<UserOutlined />} />
                       </Col>
 
                       <Col span={18}>
@@ -375,7 +361,7 @@ export default function DetailForSale() {
                         marginTop: '-10px',
                       }}
                     >
-                      <Avatar size={35}>T</Avatar>
+                      <Avatar size={35} icon={<UserOutlined />} />
                     </Space>
                     <Comment.Content>
                       <Comment.Author as="a">{item?.userName}</Comment.Author>

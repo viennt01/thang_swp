@@ -1,87 +1,125 @@
-import { ProCard, StatisticCard } from '@ant-design/pro-components';
-import RcResizeObserver from 'rc-resize-observer';
-import { useState } from 'react';
+import { Avatar, Card, Col, Row, Spin, Tabs, Typography } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
+import Feed from './feed';
+import { useEffect, useState } from 'react';
+import { appLocalStorage } from '@/utils/localstorage';
+import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
+import FeeForSale from './feed-for-sale';
 
-const { Statistic } = StatisticCard;
-
+const { Text } = Typography;
 export default function Profile() {
-  const [responsive, setResponsive] = useState(false);
-  const today = new Date();
+  const [userName, setUserName] = useState('');
+  const [userEmail, setUserEmail] = useState('');
+  const [userAddress, setUserAddress] = useState('');
+  useEffect(() => {
+    setUserName(appLocalStorage.get(LOCAL_STORAGE_KEYS.NAME_USER));
+    setUserEmail(appLocalStorage.get(LOCAL_STORAGE_KEYS.EMAIL_USER));
+    setUserAddress(appLocalStorage.get(LOCAL_STORAGE_KEYS.ADDRESS_USER));
+  }, []);
   return (
-    <div style={{ margin: '15px 0' }}>
-      <RcResizeObserver
-        key="resize-observer"
-        onResize={(offset) => {
-          setResponsive(offset.width < 596);
-        }}
-      >
-        <ProCard
-          title="Dashboard"
-          extra={today.toLocaleDateString('vi-VN')}
-          split={responsive ? 'horizontal' : 'vertical'}
-          headerBordered
-          bordered
-        >
-          <ProCard split="horizontal">
-            <ProCard split="horizontal">
-              <ProCard split="vertical">
-                <StatisticCard
-                  statistic={{
-                    title: 'Total monthly revenue',
-                    value: '234,123,1223',
-                    description: (
-                      <Statistic title="Growth" value="8.04%" trend="down" />
-                    ),
-                  }}
-                />
-                <StatisticCard
-                  statistic={{
-                    title: 'Total annual revenue',
-                    value: '234,123,1223',
-                    description: (
-                      <Statistic title="Growth" value="8.04%" trend="up" />
-                    ),
-                  }}
-                />
-              </ProCard>
-              <ProCard split="vertical">
-                <StatisticCard
-                  statistic={{
-                    title: 'Total number of existing customers',
-                    value: '155620',
-                  }}
-                />
-                <StatisticCard
-                  statistic={{
-                    title: 'Total number of transactions available',
-                    value: '1500',
-                  }}
-                />
-              </ProCard>
-            </ProCard>
-            <StatisticCard
-              title="PNL"
-              chart={
-                <img
-                  src="https://gw.alipayobjects.com/zos/alicdn/_dZIob2NB/zhuzhuangtu.svg"
-                  width="100%"
-                  alt="chart"
-                />
-              }
-            />
-          </ProCard>
-          <StatisticCard
-            title="Bình quân lợi nhuận"
-            chart={
-              <img
-                src="https://gw.alipayobjects.com/zos/alicdn/qoYmFMxWY/jieping2021-03-29%252520xiawu4.32.34.png"
-                alt="profit"
-                width="100%"
-              />
-            }
-          />
-        </ProCard>
-      </RcResizeObserver>
-    </div>
+    <>
+      <Row style={{ marginTop: 26 }}>
+        <Col span={24} style={{ marginBottom: '8px' }}>
+          <Card
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {false ? (
+              <div
+                style={{
+                  alignItems: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <Spin />
+              </div>
+            ) : (
+              <>
+                <Row>
+                  {/* <Col
+                    span={24}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Title level={3}>Thông tin cá nhân</Title>
+                  </Col> */}
+                  <Col
+                    span={24}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <Avatar size={120} icon={<UserOutlined />} />
+                  </Col>
+                  <Col
+                    span={24}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <Text strong>{userName}</Text>
+                  </Col>{' '}
+                  <Col
+                    span={24}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <Text strong>{userEmail}</Text>
+                  </Col>{' '}
+                  <Col
+                    span={24}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      marginBottom: '16px',
+                    }}
+                  >
+                    <Text strong>{userAddress}</Text>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col span={24}>
+                    <Tabs
+                      type="card"
+                      style={{ marginTop: 10 }}
+                      items={[
+                        {
+                          label: 'Feed',
+                          key: 'Feed',
+                          children: <Feed />,
+                        },
+                        {
+                          label: 'Feed for sale',
+                          key: 'Feed for sale',
+                          children: <FeeForSale />,
+                        },
+                      ]}
+                    />
+                  </Col>
+                </Row>
+              </>
+            )}
+          </Card>
+        </Col>
+      </Row>
+    </>
   );
 }

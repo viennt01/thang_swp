@@ -14,6 +14,8 @@ export const API_NEW_FEEDS = {
   CREATE_NEWS_FEED: 'create-news-feed',
   CREATE_NEWS_FEED_FOR_SALE: 'create-news-feed-for-sale',
   GET_NEWS_FEED: 'get-news-feed',
+  GET_NEWS_FEED_BY_ID_USER: 'get-news-feed-by-user-id',
+  GET_NEWS_FEED_SALE_BY_ID_USER: 'get-news-feed-for-sale-by-user-id',
   GET_NEWS_FEED_BY_ID: 'get-news-feed-by-id',
   GET_NEWS_FEED_FOR_SALE: 'get-news-feed-for-sale',
   GET_NEWS_FEED_FOR_SALE_BY_ID: 'get-news-feed-for-sale-by-id',

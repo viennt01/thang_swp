@@ -1,4 +1,4 @@
-import DetailForSale from '@/components/fee-for-sale/detail';
+import DetailForSale from '@/components/feed-for-sale/detail';
 import withAuthentication from '@/hook/useAuthentication';
 import { Inter } from '@next/font/google';
 import Head from 'next/head';

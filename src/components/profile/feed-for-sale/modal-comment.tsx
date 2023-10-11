@@ -11,14 +11,13 @@ import {
 } from 'antd';
 import React, { ChangeEvent, useEffect } from 'react';
 import { Comment } from 'semantic-ui-react';
-import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { LikeOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CommentNewFeed, LikeNewFeed } from './fetcher';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { formatDate } from '@/utils/format';
-import { UserOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Title, Text, Paragraph } = Typography;

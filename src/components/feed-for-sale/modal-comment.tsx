@@ -11,7 +11,7 @@ import {
 } from 'antd';
 import React, { ChangeEvent, useEffect } from 'react';
 import { Comment } from 'semantic-ui-react';
-import { LikeOutlined, MessageOutlined } from '@ant-design/icons';
+import { LikeOutlined, MessageOutlined, UserOutlined } from '@ant-design/icons';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { CommentNewFeed, LikeNewFeed } from './fetcher';
 import { appLocalStorage } from '@/utils/localstorage';
@@ -86,9 +86,8 @@ export default function ModalComment({ modalData, loadingData }: Props) {
                 marginRight: '10px',
               }}
               size={50}
-            >
-              T
-            </Avatar>
+              icon={<UserOutlined />}
+            />
           </div>
           <Space size={1} direction="vertical">
             <Title level={4}>{modalData?.userName}</Title>
@@ -103,7 +102,7 @@ export default function ModalComment({ modalData, loadingData }: Props) {
         <Image
           alt="anh"
           style={{ marginBottom: '16px' }}
-          src={modalData?.images[0].urlImage}
+          src={modalData?.listImages[0].urlImage}
         />
         <Space size={16}>
           <Space
@@ -131,7 +130,7 @@ export default function ModalComment({ modalData, loadingData }: Props) {
                   <Space
                     style={{ display: 'flex', top: '0px', marginTop: '-10px' }}
                   >
-                    <Avatar size={35}>T</Avatar>
+                    <Avatar size={35} icon={<UserOutlined />} />
                   </Space>
                   <Comment.Content>
                     <Comment.Author as="a">{item?.userName}</Comment.Author>

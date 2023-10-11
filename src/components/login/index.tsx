@@ -29,6 +29,14 @@ export default function LoginPage() {
           LOCAL_STORAGE_KEYS.NAME_USER,
           data.fullName as string
         );
+        appLocalStorage.set(
+          LOCAL_STORAGE_KEYS.EMAIL_USER,
+          data.email as string
+        );
+        appLocalStorage.set(
+          LOCAL_STORAGE_KEYS.ADDRESS_USER,
+          data.address as string
+        );
         router.push(ROUTERS.HOME);
         successToast('Login Success');
       },

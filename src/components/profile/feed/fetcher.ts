@@ -1,14 +1,17 @@
 import { post } from '@/fetcherAxios';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 
-export const GetNewFeed = () => {
+export const GetNewFeed = (data: any) => {
+  console.log(data);
+
   return post<any, any>({
     data: {
-      search: '',
+      userID: data,
       currentPage: 1,
       pageSize: 100,
+      search: '',
     },
-  })(API_NEW_FEEDS.GET_NEWS_FEED);
+  })(API_NEW_FEEDS.GET_NEWS_FEED_BY_ID_USER);
 };
 
 export const GetNewFeedById = (data: any) => {

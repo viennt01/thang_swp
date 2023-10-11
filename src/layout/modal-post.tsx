@@ -27,6 +27,8 @@ import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { storage } from '../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { UserOutlined } from '@ant-design/icons';
+
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
@@ -172,9 +174,8 @@ export default function ModalPost() {
                 marginRight: '10px',
               }}
               size={50}
-            >
-              T
-            </Avatar>
+              icon={<UserOutlined />}
+            />
           </div>
           <Space size={1} direction="vertical">
             <Title level={4}>{userName}</Title>
