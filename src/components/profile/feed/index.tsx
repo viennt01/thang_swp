@@ -134,10 +134,10 @@ export default function Feed() {
   const createNewFeedA = useMutation({
     mutationFn: (value: any) => UpdateNewFeed(value),
     onSuccess: () => {
-      successToast('New feed created successfully');
+      successToast('Feed edit successfully');
       setIsLoadingSubmit(false);
       queryClient.invalidateQueries({
-        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_BY_ID],
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_BY_ID_USER],
       });
     },
     onError: () => {
@@ -151,12 +151,12 @@ export default function Feed() {
       newsFeedID: idModelFeed,
       title: formValues.Title,
       content: formValues.Content,
-      imageUpdateRequests: [
-        {
-          imageID: linkFile.imageID,
-          urlImage: linkFile.urlImage,
-        },
-      ],
+      // imageUpdateRequests: [
+      //   {
+      //     imageID: linkFile.imageID,
+      //     urlImage: linkFile.urlImage,
+      //   },
+      // ],
     };
     createNewFeedA.mutate(data);
   };

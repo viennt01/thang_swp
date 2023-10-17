@@ -12,7 +12,7 @@ import {
   Spin,
   Typography,
 } from 'antd';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { GetNewFeedForSale, GetNewFeedForSaleById } from './fetcher';
 import { formatDate } from '@/utils/format';
@@ -31,7 +31,7 @@ import { errorToast, successToast } from '@/hook/toast';
 import { API_MESSAGE } from '@/constant/message';
 import Dragger from 'antd/lib/upload/Dragger';
 import { InternalFieldProps } from 'rc-field-form/lib/Field';
-import { CreateNewFeedForSale } from '@/layout/fetcher';
+import { UpdateNewFeed } from '../feed/fetcher';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -55,6 +55,7 @@ export default function FeeForSale() {
   const [isLoadingSubmit, setIsLoadingSubmit] = useState(false);
   const [userName, setUserName] = useState('');
   const [idModelFeed, setIdModelFeed] = useState('');
+  const queryClient = useQueryClient();
 
   const getNewFeedMul = useQuery({
     queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_SALE_BY_ID_USER],
@@ -118,10 +119,13 @@ export default function FeeForSale() {
   };
 
   const createNewFeedA = useMutation({
-    mutationFn: (value: any) => CreateNewFeedForSale(value),
+    mutationFn: (value: any) => UpdateNewFeed(value),
     onSuccess: () => {
-      successToast('New feed created successfully');
+      successToast('Feed edit successfully');
       setIsLoadingSubmit(false);
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_SALE_BY_ID_USER],
+      });
     },
     onError: () => {
       errorToast(API_MESSAGE.ERROR);
@@ -137,12 +141,12 @@ export default function FeeForSale() {
       price: formValues.Price,
       address: formValues.Address,
       phoneNumber: formValues.phoneNumber,
-      imageUpdateRequests: [
-        {
-          imageID: linkFile.imageID,
-          urlImage: linkFile.urlImage,
-        },
-      ],
+      // imageUpdateRequests: [
+      //   {
+      //     imageID: linkFile.imageID,
+      //     urlImage: linkFile.urlImage,
+      //   },
+      // ],
     };
     createNewFeedA.mutate(data);
   };
