@@ -21,4 +21,5 @@ export const API_NEW_FEEDS = {
   GET_NEWS_FEED_FOR_SALE_BY_ID: 'get-news-feed-for-sale-by-id',
   LIKE_NEWS_FEED: 'like-news-feed',
   COMMENT_NEWS_FEED: 'comment-news-feed',
+  UPDATE_NEW_FEED: 'update-new-feed',
 };
