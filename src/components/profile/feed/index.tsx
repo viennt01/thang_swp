@@ -247,54 +247,62 @@ export default function Feed() {
 
   return (
     <div style={{ margin: '15px 0' }}>
-      <List
-        itemLayout="vertical"
-        size="large"
-        pagination={false}
-        dataSource={data.filter((filStatus: any) => filStatus.status === 1)}
-        renderItem={(item: any) => (
-          <List.Item
-            key={item.title}
-            onClick={() => showModalFeed(item.newsFeedID)}
-            actions={[
-              <IconText
-                icon={LikeOutlined}
-                text={item.likeQuantity}
-                key="list-vertical-like-o"
-              />,
-              <IconText
-                icon={MessageOutlined}
-                key="list-vertical-message"
-                onClick={() => {
-                  showModal(item.newsFeedID);
-                }}
-              />,
-            ]}
-            extra={
-              <img
-                width={272}
-                alt="images"
-                src={item?.listImages[0].urlImage || ''}
-              />
-            }
-          >
-            <List.Item.Meta
-              avatar={
-                <Avatar
-                  style={{
-                    verticalAlign: 'middle',
+      {getNewFeedMul.isLoading ? (
+        <Row justify={'center'}>
+          <Col>
+            <Spin size="large" />
+          </Col>
+        </Row>
+      ) : (
+        <List
+          itemLayout="vertical"
+          size="large"
+          pagination={false}
+          dataSource={data.filter((filStatus: any) => filStatus.status === 1)}
+          renderItem={(item: any) => (
+            <List.Item
+              key={item.title}
+              onClick={() => showModalFeed(item.newsFeedID)}
+              actions={[
+                <IconText
+                  icon={LikeOutlined}
+                  text={item.likeQuantity}
+                  key="list-vertical-like-o"
+                />,
+                <IconText
+                  icon={MessageOutlined}
+                  key="list-vertical-message"
+                  onClick={() => {
+                    showModal(item.newsFeedID);
                   }}
-                  size={50}
-                  icon={<UserOutlined />}
+                />,
+              ]}
+              extra={
+                <img
+                  width={272}
+                  alt="images"
+                  src={item?.listImages[0].urlImage || ''}
                 />
               }
-              title={item?.title}
-              description={formatDate(Number(item?.insertDated))}
-            />
-            {item.content}
-          </List.Item>
-        )}
-      />
+            >
+              <List.Item.Meta
+                avatar={
+                  <Avatar
+                    style={{
+                      verticalAlign: 'middle',
+                    }}
+                    size={50}
+                    icon={<UserOutlined />}
+                  />
+                }
+                title={item?.title}
+                description={formatDate(Number(item?.insertDated))}
+              />
+              {item.content}
+            </List.Item>
+          )}
+        />
+      )}
 
       <Modal
         title={

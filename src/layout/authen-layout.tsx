@@ -2,21 +2,10 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import AuthenLayout from './authen-layout.module.scss';
-import {
-  Avatar,
-  Layout,
-  Space,
-  Typography,
-  Button,
-  FloatButton,
-  Image,
-  Menu,
-} from 'antd';
+import { Avatar, Layout, Space, Typography, Button, Image, Menu } from 'antd';
 import {
   UserOutlined,
   LockOutlined,
-  CommentOutlined,
-  CustomerServiceOutlined,
   ShopOutlined,
   LogoutOutlined,
   ShoppingCartOutlined,
@@ -188,17 +177,13 @@ export function AppLayout(props: Props) {
             overflowY: 'auto',
           }}
         >
-          <main>{props.children}</main>
-
-          <FloatButton.Group
-            trigger="hover"
-            type="primary"
-            style={{ right: 24 }}
-            icon={<CustomerServiceOutlined />}
+          <main
+            style={{
+              minHeight: `calc(100vh - ${HEADER_HEIGHT}px - ${FOOTER_HEIGHT}px - 8px`,
+            }}
           >
-            <FloatButton />
-            <FloatButton icon={<CommentOutlined />} />
-          </FloatButton.Group>
+            {props.children}
+          </main>
           <Footer
             style={{
               textAlign: 'center',

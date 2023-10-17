@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Col, Image, Row, Typography } from 'antd';
+import { Avatar, Col, Image, Row, Spin, Typography } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { GetNewFeedForSale } from './fetcher';
@@ -30,83 +30,91 @@ export default function FeeForSale() {
   };
   return (
     <div style={{ margin: '15px 0' }}>
-      {data
-        .filter((filStatus: any) => filStatus.status === 1)
-        .map((item: any) => {
-          return (
-            <Row
-              key={item?.newsFeedID}
-              style={{ cursor: 'pointer' }}
-              onClick={() => handleChangePageDetail(item?.newsFeedID)}
-            >
-              <Col span={24} style={{ marginBottom: '26px' }}>
-                <Row gutter={24}>
-                  <Col span={8}>
-                    <Image
-                      style={{ height: '200px' }}
-                      src={item?.listImages[0]?.urlImage}
-                      alt="anh"
-                    />
-                  </Col>
-                  <Col span={16}>
-                    <Row>
-                      <Col
-                        span={24}
-                        style={{
-                          height: '100px',
-                          display: 'flex',
-                          alignItems: 'flex-start',
-                        }}
-                      >
-                        <Row>
-                          <Col span={24}>
-                            <Title level={3} style={{ marginBottom: '0px' }}>
-                              {item.title}
-                            </Title>
-                          </Col>
-                          <Col span={24}>
-                            <Title
-                              level={5}
-                              type="danger"
-                              style={{ marginTop: '0px' }}
-                            >
-                              {`${item.price}`.replace(
-                                /\B(?=(\d{3})+(?!\d))/g,
-                                ','
-                              ) + ' VND'}
-                            </Title>
-                          </Col>
-                        </Row>
-                      </Col>
-                      <Col
-                        span={24}
-                        style={{
-                          height: '100px',
-                          display: 'flex',
-                          alignItems: 'flex-end',
-                        }}
-                      >
-                        <Avatar
+      {getNewFeedMul.isLoading ? (
+        <Row justify={'center'}>
+          <Col>
+            <Spin size="large" />
+          </Col>
+        </Row>
+      ) : (
+        data
+          .filter((filStatus: any) => filStatus.status === 1)
+          .map((item: any) => {
+            return (
+              <Row
+                key={item?.newsFeedID}
+                style={{ cursor: 'pointer' }}
+                onClick={() => handleChangePageDetail(item?.newsFeedID)}
+              >
+                <Col span={24} style={{ marginBottom: '26px' }}>
+                  <Row gutter={24}>
+                    <Col span={8}>
+                      <Image
+                        style={{ height: '200px' }}
+                        src={item?.listImages[0]?.urlImage}
+                        alt="anh"
+                      />
+                    </Col>
+                    <Col span={16}>
+                      <Row>
+                        <Col
+                          span={24}
                           style={{
-                            verticalAlign: 'middle',
-                            marginRight: '8px',
+                            height: '100px',
+                            display: 'flex',
+                            alignItems: 'flex-start',
                           }}
-                          size={25}
-                          icon={<UserOutlined />}
-                        />
+                        >
+                          <Row>
+                            <Col span={24}>
+                              <Title level={3} style={{ marginBottom: '0px' }}>
+                                {item.title}
+                              </Title>
+                            </Col>
+                            <Col span={24}>
+                              <Title
+                                level={5}
+                                type="danger"
+                                style={{ marginTop: '0px' }}
+                              >
+                                {`${item.price}`.replace(
+                                  /\B(?=(\d{3})+(?!\d))/g,
+                                  ','
+                                ) + ' VND'}
+                              </Title>
+                            </Col>
+                          </Row>
+                        </Col>
+                        <Col
+                          span={24}
+                          style={{
+                            height: '100px',
+                            display: 'flex',
+                            alignItems: 'flex-end',
+                          }}
+                        >
+                          <Avatar
+                            style={{
+                              verticalAlign: 'middle',
+                              marginRight: '8px',
+                            }}
+                            size={25}
+                            icon={<UserOutlined />}
+                          />
 
-                        <Text type="secondary">{item.userName}</Text>
-                        <Text type="secondary">
-                          - {formatDate(Number(item.insertDated))}
-                        </Text>
-                      </Col>
-                    </Row>
-                  </Col>
-                </Row>
-              </Col>
-            </Row>
-          );
-        })}
+                          <Text type="secondary">{item.userName}</Text>
+                          <Text type="secondary">
+                            - {formatDate(Number(item.insertDated))}
+                          </Text>
+                        </Col>
+                      </Row>
+                    </Col>
+                  </Row>
+                </Col>
+              </Row>
+            );
+          })
+      )}
     </div>
   );
 }

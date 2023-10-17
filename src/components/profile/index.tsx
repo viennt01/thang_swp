@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import FeeForSale from './feed-for-sale';
+import style from './index.module.scss';
 
 const { Text } = Typography;
 export default function Profile() {
@@ -18,7 +19,7 @@ export default function Profile() {
   }, []);
   return (
     <>
-      <Row style={{ marginTop: 26 }}>
+      <Row style={{ marginTop: 8 }} className={style.profile}>
         <Col span={24} style={{ marginBottom: '8px' }}>
           <Card
             style={{
