@@ -152,7 +152,9 @@ export default function ModalPostForSale() {
         shape="round"
         icon={<FormOutlined />}
         onClick={() => showModal()}
-        style={{ display: router.asPath === ROUTERS.HOME ? '' : 'none' }}
+        style={{
+          display: router.asPath === ROUTERS.FEE_FOR_SALE ? '' : 'none',
+        }}
       >
         POST FOR SALE
       </Button>
