@@ -304,7 +304,7 @@ export default function DetailForSale() {
                           </Text>
                         </Button>
                       </Col>
-                      <Col
+                      {/* <Col
                         span={24}
                         style={{
                           display: 'flex',
@@ -330,7 +330,7 @@ export default function DetailForSale() {
                             CHAT VỚI NGƯỜI BÁN
                           </Text>
                         </Button>
-                      </Col>
+                      </Col> */}
                     </Row>
                   </Col>
                 </Row>
