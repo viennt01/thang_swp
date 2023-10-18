@@ -160,15 +160,6 @@ export default function DetailForSale() {
                     >
                       <Text strong>Địa chỉ: </Text> <Text>{data?.address}</Text>
                     </Col>
-                    <Col
-                      span={18}
-                      style={{
-                        marginTop: '16px',
-                      }}
-                    >
-                      <Text strong>Ngày sinh: </Text>{' '}
-                      <Text>{formatDate(Number(data?.birthDated))}</Text>
-                    </Col>
                   </Row>
                 </Col>
               </Row>
@@ -258,7 +249,7 @@ export default function DetailForSale() {
                   </Col>
                   <Col span={24} style={{ marginBottom: '32px' }}>
                     <Row>
-                      <Col
+                      {/* <Col
                         span={24}
                         style={{
                           display: 'flex',
@@ -285,7 +276,7 @@ export default function DetailForSale() {
                         >
                           Mua ngay
                         </Button>
-                      </Col>
+                      </Col> */}
                       <Col
                         span={24}
                         style={{

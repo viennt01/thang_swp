@@ -11,7 +11,6 @@ import {
   Button,
   Select,
   Spin,
-  DatePicker,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
@@ -37,7 +36,6 @@ import { storage } from '../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 const { TextArea } = Input;
 const { Title, Text } = Typography;
-const dateFormat = 'YYYY/MM/DD';
 
 export default function ModalPostForSale() {
   const [form] = Form.useForm();
@@ -101,7 +99,6 @@ export default function ModalPostForSale() {
       address: formValues.Address,
       price: formValues.Price,
       phoneNumber: formValues.PhoneNumber,
-      birthDate: formValues.BirthDated.valueOf(),
     };
     createNewFeedA.mutate(data);
   };
@@ -289,26 +286,6 @@ export default function ModalPostForSale() {
                   size="large"
                   prefix={<PhoneOutlined />}
                   placeholder="Phone Number"
-                />
-              </Form.Item>
-            </Col>
-            <Col span={24}>
-              <Form.Item
-                name="BirthDated"
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please input your birth dated!',
-                  },
-                ]}
-                style={{ margin: 0 }}
-              >
-                <DatePicker
-                  placeholder="Please input your birth date"
-                  size="large"
-                  showToday
-                  format={dateFormat}
-                  style={{ width: '100%' }}
                 />
               </Form.Item>
             </Col>
