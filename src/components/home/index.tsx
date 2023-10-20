@@ -44,6 +44,11 @@ export default function Home() {
   const [keySearch, setKeySearch] = useState('');
 
   useEffect(() => {
+    appLocalStorage.set(LOCAL_STORAGE_KEYS.SEARCH_FEED, '');
+    window.dispatchEvent(new Event(LOCAL_STORAGE_KEYS.SEARCH_FEED));
+  }, []);
+
+  useEffect(() => {
     const alertMessage = () => {
       setKeySearch(appLocalStorage.get(LOCAL_STORAGE_KEYS.SEARCH_FEED));
     };
@@ -113,7 +118,12 @@ export default function Home() {
         <List
           itemLayout="vertical"
           size="large"
-          pagination={false}
+          pagination={{
+            onChange: (page) => {
+              console.log(page);
+            },
+            pageSize: 5,
+          }}
           dataSource={data.filter((filStatus: any) => filStatus.status === 1)}
           renderItem={(item: any) => (
             <List.Item

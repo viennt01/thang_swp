@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Avatar, Col, Image, Row, Spin, Typography } from 'antd';
+import { Avatar, Col, Image, List, Row, Spin, Typography } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { GetNewFeedForSale } from './fetcher';
@@ -15,6 +15,11 @@ const { Title, Text } = Typography;
 export default function FeeForSale() {
   const [data, setData] = useState([]);
   const [keySearch, setKeySearch] = useState('');
+
+  useEffect(() => {
+    appLocalStorage.set(LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE, '');
+    window.dispatchEvent(new Event(LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE));
+  }, []);
 
   useEffect(() => {
     const alertMessage = () => {
@@ -61,10 +66,18 @@ export default function FeeForSale() {
           </Col>
         </Row>
       ) : (
-        data
-          .filter((filStatus: any) => filStatus.status === 1)
-          .map((item: any) => {
-            return (
+        <List
+          itemLayout="vertical"
+          size="large"
+          pagination={{
+            onChange: (page) => {
+              console.log(page);
+            },
+            pageSize: 5,
+          }}
+          dataSource={data.filter((filStatus: any) => filStatus.status === 1)}
+          renderItem={(item: any) => (
+            <List.Item key={item.title}>
               <Row
                 key={item?.newsFeedID}
                 style={{ cursor: 'pointer' }}
@@ -136,8 +149,9 @@ export default function FeeForSale() {
                   </Row>
                 </Col>
               </Row>
-            );
-          })
+            </List.Item>
+          )}
+        />
       )}
     </div>
   );

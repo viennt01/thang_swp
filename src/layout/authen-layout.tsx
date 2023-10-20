@@ -113,6 +113,7 @@ export function AppLayout(props: Props) {
                 <Search
                   placeholder="Input search text"
                   allowClear
+                  // value={appLocalStorage.get(LOCAL_STORAGE_KEYS.SEARCH_FEED)}
                   size="middle"
                   onChange={(e) => {
                     appLocalStorage.set(
@@ -134,6 +135,9 @@ export function AppLayout(props: Props) {
               <Space.Compact>
                 <Search
                   placeholder="Input search text"
+                  // value={appLocalStorage.get(
+                  //   LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE
+                  // )}
                   allowClear
                   size="middle"
                   onChange={(e) => {
