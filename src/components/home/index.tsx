@@ -6,6 +6,8 @@ import { useQuery } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { GetNewFeed, GetNewFeedById } from './fetcher';
 import { formatDate } from '@/utils/format';
+import { appLocalStorage } from '@/utils/localstorage';
+import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 const { Title } = Typography;
 
 const IconText = ({
@@ -39,10 +41,24 @@ export default function Home() {
   const [data, setData] = useState([]);
   const [dataModal, setDataModal] = useState<any>();
   const [idModel, setIdModel] = useState('');
+  const [keySearch, setKeySearch] = useState('');
+
+  useEffect(() => {
+    const alertMessage = () => {
+      setKeySearch(appLocalStorage.get(LOCAL_STORAGE_KEYS.SEARCH_FEED));
+    };
+    const alertMessage2 = () => {
+      console.log(2);
+    };
+    window.addEventListener(LOCAL_STORAGE_KEYS.SEARCH_FEED, alertMessage);
+    return () => {
+      window.removeEventListener(LOCAL_STORAGE_KEYS.SEARCH_FEED, alertMessage2);
+    };
+  }, []);
 
   const getNewFeedMul = useQuery({
-    queryKey: [API_NEW_FEEDS.GET_NEWS_FEED],
-    queryFn: () => GetNewFeed(),
+    queryKey: [API_NEW_FEEDS.GET_NEWS_FEED, keySearch],
+    queryFn: () => GetNewFeed(keySearch),
     onSuccess: (data) => {
       setData(data.data);
     },

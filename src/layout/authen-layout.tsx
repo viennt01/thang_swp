@@ -2,7 +2,16 @@ import React, { useEffect, useState } from 'react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import AuthenLayout from './authen-layout.module.scss';
-import { Avatar, Layout, Space, Typography, Button, Image, Menu } from 'antd';
+import {
+  Avatar,
+  Layout,
+  Space,
+  Typography,
+  Button,
+  Image,
+  Menu,
+  Input,
+} from 'antd';
 import {
   UserOutlined,
   LockOutlined,
@@ -21,6 +30,7 @@ const { Header, Content, Footer, Sider } = Layout;
 export const HEADER_HEIGHT = 64;
 export const FOOTER_HEIGHT = 38;
 const { Text } = Typography;
+const { Search } = Input;
 
 interface Props {
   children: React.ReactNode;
@@ -67,79 +77,137 @@ export function AppLayout(props: Props) {
           borderBottom: '1px solid',
         }}
       >
-        <Space style={{ width: '100%', justifyContent: 'space-between' }}>
+        <Space
+          className={AuthenLayout.container}
+          style={{
+            width: '100%',
+            justifyContent: 'space-between',
+            marginTop: '-18px',
+          }}
+        >
           <Space>
             <Image
               preview={false}
               style={{
                 cursor: 'pointer',
                 height: '54px',
-                marginTop: '-15px',
+                marginTop: '-4px',
               }}
               src="/images/logo.png"
               onClick={() => router.push(ROUTERS.HOME)}
               alt="logo"
             />
           </Space>
-          <Space style={{ cursor: 'pointer' }}>
-            <ModalPostForSale />
-            <ModalPost />
-            <div>
-              <div
-                onClick={onClickShowPopupAvatar}
-                className={AuthenLayout.userAvatar}
-              >
-                <Avatar
-                  style={{
-                    verticalAlign: 'middle',
-                    marginRight: '10px',
-                  }}
-                  icon={<UserOutlined />}
-                />
 
-                {userName}
+          <Space
+            style={{
+              cursor: 'pointer',
+            }}
+          >
+            <Space
+              style={{
+                display: router.asPath === ROUTERS.HOME ? '' : 'none',
+              }}
+            >
+              <Space.Compact>
+                <Search
+                  placeholder="Input search text"
+                  allowClear
+                  size="middle"
+                  onChange={(e) => {
+                    appLocalStorage.set(
+                      LOCAL_STORAGE_KEYS.SEARCH_FEED,
+                      e.target.value as string
+                    );
+                    window.dispatchEvent(
+                      new Event(LOCAL_STORAGE_KEYS.SEARCH_FEED)
+                    );
+                  }}
+                />
+              </Space.Compact>
+            </Space>
+            <Space
+              style={{
+                display: router.asPath === ROUTERS.FEE_FOR_SALE ? '' : 'none',
+              }}
+            >
+              <Space.Compact>
+                <Search
+                  placeholder="Input search text"
+                  allowClear
+                  size="middle"
+                  onChange={(e) => {
+                    appLocalStorage.set(
+                      LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE,
+                      e.target.value as string
+                    );
+                    window.dispatchEvent(
+                      new Event(LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE)
+                    );
+                  }}
+                />
+              </Space.Compact>
+            </Space>
+            <Space>
+              <ModalPostForSale />
+              <ModalPost />
+              <div>
+                <div
+                  onClick={onClickShowPopupAvatar}
+                  className={AuthenLayout.userAvatar}
+                >
+                  <Avatar
+                    style={{
+                      verticalAlign: 'middle',
+                      marginRight: '10px',
+                    }}
+                    icon={<UserOutlined />}
+                  />
+
+                  {userName}
+                </div>
+                <div
+                  className={`${AuthenLayout.userMenu} ${
+                    classActiveAvatarPopup != '' ? AuthenLayout.active : ''
+                  }`}
+                >
+                  <ul>
+                    <li>
+                      <Button
+                        className={AuthenLayout.userMenuButton}
+                        icon={<UserOutlined />}
+                        onClick={() => {
+                          return (
+                            router.push(ROUTERS.PROFILE),
+                            setClassActiveAvatarPopup('')
+                          );
+                        }}
+                      >
+                        My Profile
+                      </Button>
+                    </li>
+                    <li>
+                      <Button
+                        className={AuthenLayout.userMenuButton}
+                        icon={<LockOutlined />}
+                      >
+                        Change Password
+                      </Button>
+                    </li>
+                    <li>
+                      <Button
+                        className={AuthenLayout.userMenuButton}
+                        icon={<LogoutOutlined />}
+                        danger
+                        onClick={() => handleLogout()}
+                      >
+                        Logout
+                      </Button>
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div
-                className={`${AuthenLayout.userMenu} ${
-                  classActiveAvatarPopup != '' ? AuthenLayout.active : ''
-                }`}
-              >
-                <ul>
-                  <li>
-                    <Button
-                      className={AuthenLayout.userMenuButton}
-                      icon={<UserOutlined />}
-                      onClick={() => {
-                        return (
-                          router.push(ROUTERS.PROFILE),
-                          setClassActiveAvatarPopup('')
-                        );
-                      }}
-                    >
-                      My Profile
-                    </Button>
-                  </li>
-                  <li>
-                    <Button
-                      className={AuthenLayout.userMenuButton}
-                      icon={<LockOutlined />}
-                    >
-                      Change Password
-                    </Button>
-                  </li>
-                  <li>
-                    <Button
-                      className={AuthenLayout.userMenuButton}
-                      icon={<LogoutOutlined />}
-                      danger
-                      onClick={() => handleLogout()}
-                    >
-                      Logout
-                    </Button>
-                  </li>
-                </ul>
-              </div>
-            </div>
+            </Space>
           </Space>
         </Space>
       </Header>

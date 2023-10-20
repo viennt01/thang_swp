@@ -7,15 +7,39 @@ import { formatDate } from '@/utils/format';
 import router from 'next/router';
 import { ROUTERS } from '@/constant/router';
 import { UserOutlined } from '@ant-design/icons';
+import { appLocalStorage } from '@/utils/localstorage';
+import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 
 const { Title, Text } = Typography;
 
 export default function FeeForSale() {
   const [data, setData] = useState([]);
+  const [keySearch, setKeySearch] = useState('');
+
+  useEffect(() => {
+    const alertMessage = () => {
+      setKeySearch(
+        appLocalStorage.get(LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE)
+      );
+    };
+    const alertMessage2 = () => {
+      console.log(2);
+    };
+    window.addEventListener(
+      LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE,
+      alertMessage
+    );
+    return () => {
+      window.removeEventListener(
+        LOCAL_STORAGE_KEYS.SEARCH_FEED_FOR_SALE,
+        alertMessage2
+      );
+    };
+  }, []);
 
   const getNewFeedMul = useQuery({
-    queryKey: [API_NEW_FEEDS.CREATE_NEWS_FEED_FOR_SALE],
-    queryFn: () => GetNewFeedForSale(),
+    queryKey: [API_NEW_FEEDS.CREATE_NEWS_FEED_FOR_SALE, keySearch],
+    queryFn: () => GetNewFeedForSale(keySearch),
     onSuccess: (data) => {
       setData(data.data);
     },

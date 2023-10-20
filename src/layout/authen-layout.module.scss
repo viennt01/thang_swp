@@ -3,84 +3,91 @@ $c: #1D4486;
 $n: #FF4C13;
 $d: 55px;
 $t: 2.2s;
-
-// Dropdown Avatar Menu
-.userAvatar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.userMenu {
-    position: absolute;
-    top: 145px;
-    right: 20px;
-    padding: 10px 20px;
-    width: 200px;
-    background: #fff;
-    border-radius: 15px;
-    transition: 0.5s;
-    visibility: hidden;
-    opacity: 0;
-    -webkit-box-shadow: 4px 4px 10px -1px #1D4486;
-    -moz-box-shadow: 4px 4px 10px -1px #1D4486;
-    box-shadow: 4px 4px 10px -1px #1D4486;
-
-    ul {
-        padding-left: 0;
-        margin-bottom: unset;
-
-        li {
-            padding: 10px 0;
-            border-top: 1px solid rgba(0, 0, 0, 0.05);
-            display: flex;
-            align-items: center;
-
-            &:first-child {
-                border-top: none;
-            }
-
-            svg {
-                font-size: 20px;
-            }
-
-            &:hover {
-                .userMenuButton {
-                    color: #1D4486;
-                }
-            }
-
-            .userMenuButton {
-                color: #555;
-                font-weight: 500;
-                transition: all 0.1s ease-in-out;
-                font-size: 15px;
-                border: unset;
-                width: 100%;
-                background: transparent;
-                box-shadow: unset;
+.container{
+    // :global {
+    //     .ant-space-item {
+    //       width: 100%;
+    //     }
+    //   }
+    // Dropdown Avatar Menu
+    .userAvatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .userMenu {
+        position: absolute;
+        top: 145px;
+        right: 20px;
+        padding: 10px 20px;
+        width: 200px;
+        background: #fff;
+        border-radius: 15px;
+        transition: 0.5s;
+        visibility: hidden;
+        opacity: 0;
+        -webkit-box-shadow: 4px 4px 10px -1px #1D4486;
+        -moz-box-shadow: 4px 4px 10px -1px #1D4486;
+        box-shadow: 4px 4px 10px -1px #1D4486;
+    
+        ul {
+            padding-left: 0;
+            margin-bottom: unset;
+    
+            li {
+                padding: 10px 0;
+                border-top: 1px solid rgba(0, 0, 0, 0.05);
                 display: flex;
                 align-items: center;
+    
+                &:first-child {
+                    border-top: none;
+                }
+    
+                svg {
+                    font-size: 20px;
+                }
+    
+                &:hover {
+                    .userMenuButton {
+                        color: #1D4486;
+                    }
+                }
+    
+                .userMenuButton {
+                    color: #555;
+                    font-weight: 500;
+                    transition: all 0.1s ease-in-out;
+                    font-size: 15px;
+                    border: unset;
+                    width: 100%;
+                    background: transparent;
+                    box-shadow: unset;
+                    display: flex;
+                    align-items: center;
+                }
             }
+        }
+    
+        &.active {
+            top: 70px;
+            visibility: visible;
+            opacity: 1;
+        }
+    
+        &::before {
+            content: '';
+            position: absolute;
+            top: -5px;
+            right: 28px;
+            width: 20px;
+            height: 20px;
+            background: #fff;
+            transform: rotate(45deg);
         }
     }
 
-    &.active {
-        top: 70px;
-        visibility: visible;
-        opacity: 1;
-    }
-
-    &::before {
-        content: '';
-        position: absolute;
-        top: -5px;
-        right: 28px;
-        width: 20px;
-        height: 20px;
-        background: #fff;
-        transform: rotate(45deg);
-    }
 }
 
 // Scroll Back To Top

@@ -1,10 +1,10 @@
 import { post } from '@/fetcherAxios';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 
-export const GetNewFeed = () => {
+export const GetNewFeed = (data: any) => {
   return post<any, any>({
     data: {
-      search: '',
+      search: data,
       currentPage: 1,
       pageSize: 100,
     },

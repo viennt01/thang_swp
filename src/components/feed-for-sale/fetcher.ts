@@ -13,10 +13,10 @@ export const CommentNewFeed = (data: any) => {
   })(API_NEW_FEEDS.COMMENT_NEWS_FEED);
 };
 
-export const GetNewFeedForSale = () => {
+export const GetNewFeedForSale = (data: any) => {
   return post<any, any>({
     data: {
-      search: '',
+      search: data,
       currentPage: 1,
       pageSize: 100,
     },
