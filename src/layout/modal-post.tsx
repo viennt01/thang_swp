@@ -9,7 +9,6 @@ import {
   Col,
   Modal,
   Button,
-  Select,
   Spin,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
@@ -18,9 +17,9 @@ import Dragger from 'antd/lib/upload/Dragger';
 import { useRouter } from 'next/router';
 import { ROUTERS } from '@/constant/router';
 import { InternalFieldProps } from 'rc-field-form/lib/Field';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { API_MASTER_DATA, API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
-import { CreateNewFeed, getTypeGoods } from './fetcher';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
+import { CreateNewFeed } from './fetcher';
 import { errorToast, successToast } from '@/hook/toast';
 import { API_MESSAGE } from '@/constant/message';
 import { appLocalStorage } from '@/utils/localstorage';
@@ -68,10 +67,10 @@ export default function ModalPost() {
     return e.fileList[0] ? [e.fileList[0].originFileObj] : [];
   };
 
-  const getTypeGoodsMul = useQuery({
-    queryKey: [API_MASTER_DATA.GET_TYPE_GOODS],
-    queryFn: () => getTypeGoods(),
-  });
+  // const getTypeGoodsMul = useQuery({
+  //   queryKey: [API_MASTER_DATA.GET_TYPE_GOODS],
+  //   queryFn: () => getTypeGoods(),
+  // });
 
   const createNewFeedA = useMutation({
     mutationFn: (value: any) => CreateNewFeed(value),
@@ -80,7 +79,7 @@ export default function ModalPost() {
       setIsModalOpen(false);
       setIsLoadingSubmit(false);
       queryClient.invalidateQueries({
-        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_BY_ID],
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED],
       });
     },
     onError: () => {
@@ -92,7 +91,7 @@ export default function ModalPost() {
     setIsLoadingSubmit(true);
     const data = {
       userID: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
-      typeGoodsID: formValues.TypeGoodsID,
+      typeGoodsID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
       title: formValues.Title,
       content: formValues.Content,
       listImage: [linkFile],
@@ -201,7 +200,7 @@ export default function ModalPost() {
                 <Input placeholder="Please enter a title" size="large" />
               </Form.Item>
             </Col>
-            <Col span={24}>
+            {/* <Col span={24}>
               <Form.Item
                 name="TypeGoodsID"
                 style={{ margin: 0 }}
@@ -223,7 +222,7 @@ export default function ModalPost() {
                   }
                 />
               </Form.Item>
-            </Col>
+            </Col> */}
             <Col span={24}>
               <Form.Item
                 name="Content"

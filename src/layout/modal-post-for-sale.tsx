@@ -11,6 +11,7 @@ import {
   Button,
   Select,
   Spin,
+  InputNumber,
 } from 'antd';
 import React, { useEffect, useState } from 'react';
 import {
@@ -20,24 +21,26 @@ import {
   PhoneOutlined,
   UserOutlined,
   HomeOutlined,
+  CalculatorOutlined,
 } from '@ant-design/icons';
 import Dragger from 'antd/lib/upload/Dragger';
 import { useRouter } from 'next/router';
 import { ROUTERS } from '@/constant/router';
 import { InternalFieldProps } from 'rc-field-form/lib/Field';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { API_MASTER_DATA } from '@/fetcherAxios/endpoint';
-import { CreateNewFeedForSale, getTypeGoods } from './fetcher';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { CreateNewFeedForSale } from './fetcher';
 import { errorToast, successToast } from '@/hook/toast';
 import { API_MESSAGE } from '@/constant/message';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { storage } from '../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
+import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
 export default function ModalPostForSale() {
+  const queryClient = useQueryClient();
   const [form] = Form.useForm();
   const router = useRouter();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -71,17 +74,15 @@ export default function ModalPostForSale() {
     return e.fileList[0] ? [e.fileList[0].originFileObj] : [];
   };
 
-  const getTypeGoodsMul = useQuery({
-    queryKey: [API_MASTER_DATA.GET_TYPE_GOODS],
-    queryFn: () => getTypeGoods(),
-  });
-
   const createNewFeedA = useMutation({
     mutationFn: (value: any) => CreateNewFeedForSale(value),
     onSuccess: () => {
       successToast('New feed created successfully');
       setIsModalOpen(false);
       setIsLoadingSubmit(false);
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.CREATE_NEWS_FEED_FOR_SALE],
+      });
     },
     onError: () => {
       errorToast(API_MESSAGE.ERROR);
@@ -92,7 +93,9 @@ export default function ModalPostForSale() {
     setIsLoadingSubmit(true);
     const data = {
       userID: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
-      typeGoodsID: formValues.TypeGoodsID,
+      typeGoodsID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      unit: formValues.Uint,
+      quantity: formValues.quantity,
       title: formValues.Title,
       content: formValues.Content,
       listImage: [linkFile],
@@ -210,29 +213,6 @@ export default function ModalPostForSale() {
             </Col>
             <Col span={24}>
               <Form.Item
-                name="TypeGoodsID"
-                style={{ margin: 0 }}
-                rules={[
-                  {
-                    required: true,
-                    message: 'Please select type goods',
-                  },
-                ]}
-              >
-                <Select
-                  placeholder="Please select type goods"
-                  size="large"
-                  options={
-                    getTypeGoodsMul.data?.map((type: any) => ({
-                      label: type.typeGoodsName,
-                      value: type.typeGoodsID,
-                    })) || []
-                  }
-                />
-              </Form.Item>
-            </Col>
-            <Col lg={12} span={24}>
-              <Form.Item
                 name="Price"
                 rules={[
                   {
@@ -253,6 +233,49 @@ export default function ModalPostForSale() {
                 />
               </Form.Item>
             </Col>
+            <Col span={12}>
+              <Form.Item
+                name="quantity"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input quantity!',
+                  },
+                ]}
+                style={{ margin: 0, width: '100%' }}
+              >
+                <InputNumber
+                  style={{ margin: 0, width: '100%' }}
+                  size="large"
+                  prefix={<CalculatorOutlined />}
+                  placeholder="Quantity"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="Uint"
+                style={{ margin: 0 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select unit',
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Please select unit"
+                  size="large"
+                  options={[
+                    { label: 'Con', value: 'Con' },
+                    { label: 'Cái', value: 'Cái' },
+                    { label: 'Kg', value: 'Kg' },
+                    { label: 'Lít', value: 'Lít' },
+                  ]}
+                />
+              </Form.Item>
+            </Col>
+
             <Col span={24}>
               <Form.Item
                 name="Address"
