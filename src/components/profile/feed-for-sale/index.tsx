@@ -6,8 +6,10 @@ import {
   Form,
   Image,
   Input,
+  InputNumber,
   Modal,
   Row,
+  Select,
   Space,
   Spin,
   Typography,
@@ -26,6 +28,7 @@ import {
   InboxOutlined,
   PhoneOutlined,
   HomeOutlined,
+  CalculatorOutlined,
 } from '@ant-design/icons';
 import { errorToast, successToast } from '@/hook/toast';
 import { API_MESSAGE } from '@/constant/message';
@@ -85,6 +88,8 @@ export default function FeeForSale() {
       form.setFieldValue('Address', data.address);
       form.setFieldValue('Content', data.content);
       form.setFieldValue('phoneNumber', data.phoneNumber);
+      form.setFieldValue('quantity', data.quantity);
+      form.setFieldValue('Uint', data.unit);
       setLinkFile(data.listImages[0]);
     },
   });
@@ -141,6 +146,8 @@ export default function FeeForSale() {
       price: formValues.Price,
       address: formValues.Address,
       phoneNumber: formValues.phoneNumber,
+      unit: formValues.Uint,
+      quantity: formValues.quantity,
       // imageUpdateRequests: [
       //   {
       //     imageID: linkFile.imageID,
@@ -333,7 +340,7 @@ export default function FeeForSale() {
                 <Input placeholder="Please input your a title" size="large" />
               </Form.Item>
             </Col>
-            <Col lg={12} span={24}>
+            <Col span={24}>
               <Form.Item
                 name="Price"
                 rules={[
@@ -352,6 +359,48 @@ export default function FeeForSale() {
                   size="large"
                   placeholder="Please input your price"
                   allowClear
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="quantity"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please input quantity!',
+                  },
+                ]}
+                style={{ margin: 0, width: '100%' }}
+              >
+                <InputNumber
+                  style={{ margin: 0, width: '100%' }}
+                  size="large"
+                  prefix={<CalculatorOutlined />}
+                  placeholder="Quantity"
+                />
+              </Form.Item>
+            </Col>
+            <Col span={12}>
+              <Form.Item
+                name="Uint"
+                style={{ margin: 0 }}
+                rules={[
+                  {
+                    required: true,
+                    message: 'Please select unit',
+                  },
+                ]}
+              >
+                <Select
+                  placeholder="Please select unit"
+                  size="large"
+                  options={[
+                    { label: 'Con', value: 'Con' },
+                    { label: 'Cái', value: 'Cái' },
+                    { label: 'Kg', value: 'Kg' },
+                    { label: 'Lít', value: 'Lít' },
+                  ]}
                 />
               </Form.Item>
             </Col>
