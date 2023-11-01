@@ -22,4 +22,5 @@ export const API_NEW_FEEDS = {
   LIKE_NEWS_FEED: 'like-news-feed',
   COMMENT_NEWS_FEED: 'comment-news-feed',
   UPDATE_NEW_FEED: 'update-new-feed',
+  UPDATE_NEW_FEED_FOR_SALE: 'update-news-feed-for-sales',
 };
