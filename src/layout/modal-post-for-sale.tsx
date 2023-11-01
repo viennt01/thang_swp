@@ -101,7 +101,7 @@ export default function ModalPostForSale() {
       listImage: [linkFile],
       address: formValues.Address,
       price: formValues.Price,
-      phoneNumber: formValues.PhoneNumber,
+      phoneNumber: formValues.phoneNumber,
     };
     createNewFeedA.mutate(data);
   };
