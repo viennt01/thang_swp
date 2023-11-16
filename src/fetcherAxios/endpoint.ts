@@ -23,4 +23,9 @@ export const API_NEW_FEEDS = {
   COMMENT_NEWS_FEED: 'comment-news-feed',
   UPDATE_NEW_FEED: 'update-new-feed',
   UPDATE_NEW_FEED_FOR_SALE: 'update-news-feed-for-sales',
+  ACCEPT_BUY: 'confirm-user-accept-seen-numberphone-for-news-feed-for-sales',
+  CONFIRM_BUY: 'confirm-user-for-news-feed-for-sales',
+};
+export const API_REACTION = {
+  INTERESTED_NEWS_FEED: 'Interested-news-feed',
 };

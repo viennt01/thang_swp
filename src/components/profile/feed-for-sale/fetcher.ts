@@ -31,3 +31,14 @@ export const GetNewFeedForSaleById = (data: any) => {
     },
   })(API_NEW_FEEDS.GET_NEWS_FEED_FOR_SALE_BY_ID);
 };
+
+export const AcceptBuy = (data: any) => {
+  return post<any, any>({
+    data,
+  })(API_NEW_FEEDS.ACCEPT_BUY);
+};
+export const ConfirmBuy = (data: any) => {
+  return post<any, any>({
+    data,
+  })(API_NEW_FEEDS.CONFIRM_BUY);
+};

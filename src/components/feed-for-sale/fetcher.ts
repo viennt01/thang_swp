@@ -1,5 +1,5 @@
 import { post } from '@/fetcherAxios';
-import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
+import { API_NEW_FEEDS, API_REACTION } from '@/fetcherAxios/endpoint';
 
 export const LikeNewFeed = (data: any) => {
   return post<any, any>({
@@ -25,8 +25,12 @@ export const GetNewFeedForSale = (data: any) => {
 
 export const GetNewFeedForSaleById = (data: any) => {
   return post<any, any>({
-    data: {
-      id: data,
-    },
+    data,
   })(API_NEW_FEEDS.GET_NEWS_FEED_FOR_SALE_BY_ID);
+};
+
+export const ReactionInterested = (data: any) => {
+  return post<any, any>({
+    data,
+  })(API_REACTION.INTERESTED_NEWS_FEED);
 };

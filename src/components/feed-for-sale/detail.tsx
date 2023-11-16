@@ -16,7 +16,12 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { Comment } from 'semantic-ui-react';
 import { FireOutlined, LikeOutlined } from '@ant-design/icons';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { CommentNewFeed, GetNewFeedForSaleById, LikeNewFeed } from './fetcher';
+import {
+  CommentNewFeed,
+  GetNewFeedForSaleById,
+  LikeNewFeed,
+  ReactionInterested,
+} from './fetcher';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
@@ -24,6 +29,7 @@ import { formatDate } from '@/utils/format';
 import style from './index.module.scss';
 import router from 'next/router';
 import { UserOutlined } from '@ant-design/icons';
+import { successToast } from '@/hook/toast';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -77,12 +83,29 @@ export default function DetailForSale() {
     queryKey: [API_NEW_FEEDS.CREATE_NEWS_FEED_FOR_SALE],
     queryFn: () => {
       if (id) {
-        return GetNewFeedForSaleById(id);
+        const data = {
+          id: id,
+          userId: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
+        };
+        return GetNewFeedForSaleById(data);
       }
       return null;
     },
     onSuccess: (data) => {
       setData(data);
+    },
+  });
+
+  const interestedNewsFeed = useMutation({
+    mutationFn: (body: any) => {
+      return ReactionInterested(body);
+    },
+    onSuccess: (body: any) => {
+      console.log(body);
+      successToast('Request has been sent to the seller');
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_FOR_SALE_BY_ID],
+      });
     },
   });
 
@@ -285,24 +308,52 @@ export default function DetailForSale() {
                           marginBottom: '26px',
                         }}
                       >
-                        <Button
-                          type="primary"
-                          style={{
-                            height: '40px',
-                            width: '80%',
-                            fontSize: '18px',
-                            color: '#fff',
-                            backgroundColor: '#2BE876',
-                            boxShadow:
-                              'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
-                          }}
-                          htmlType="submit"
-                          href={`tel:${data?.phoneNumber}`}
-                        >
-                          <Text strong style={{ color: '#fff' }}>
-                            BẤM ĐỂ GỌI
-                          </Text>
-                        </Button>
+                        {data?.phoneNumber ? (
+                          <Button
+                            type="primary"
+                            style={{
+                              height: '40px',
+                              width: '80%',
+                              fontSize: '18px',
+                              color: '#fff',
+                              backgroundColor: '#2BE876',
+                              boxShadow:
+                                'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
+                            }}
+                            htmlType="submit"
+                            href={`tel:${data?.phoneNumber}`}
+                          >
+                            <Text strong style={{ color: '#fff' }}>
+                              BẤM ĐỂ GỌI ({data?.phoneNumber})
+                            </Text>
+                          </Button>
+                        ) : (
+                          <Button
+                            type="primary"
+                            style={{
+                              cursor: 'pointer',
+                              height: '40px',
+                              width: '80%',
+                              fontSize: '18px',
+                              color: '#fff',
+                              backgroundColor: '#2BE876',
+                              boxShadow:
+                                'rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px',
+                            }}
+                            onClick={() =>
+                              interestedNewsFeed.mutate({
+                                userID: appLocalStorage.get(
+                                  LOCAL_STORAGE_KEYS.ID_USER
+                                ),
+                                newsFeedID: data.newsFeedID,
+                              })
+                            }
+                          >
+                            <Text strong style={{ color: '#fff' }}>
+                              Yêu cầu mua
+                            </Text>
+                          </Button>
+                        )}
                       </Col>
                       {/* <Col
                         span={24}

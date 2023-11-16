@@ -7,16 +7,24 @@ import {
   Image,
   Input,
   InputNumber,
+  List,
   Modal,
+  Popover,
   Row,
   Select,
   Space,
   Spin,
+  Switch,
   Typography,
 } from 'antd';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
-import { GetNewFeedForSale, GetNewFeedForSaleById } from './fetcher';
+import {
+  AcceptBuy,
+  ConfirmBuy,
+  GetNewFeedForSale,
+  GetNewFeedForSaleById,
+} from './fetcher';
 import { formatDate } from '@/utils/format';
 import { UserOutlined } from '@ant-design/icons';
 import { appLocalStorage } from '@/utils/localstorage';
@@ -35,6 +43,7 @@ import { API_MESSAGE } from '@/constant/message';
 import Dragger from 'antd/lib/upload/Dragger';
 import { InternalFieldProps } from 'rc-field-form/lib/Field';
 import { UpdateNewFeed } from '../feed/fetcher';
+import { CheckOutlined } from '@ant-design/icons';
 
 const { TextArea } = Input;
 const { Title, Text } = Typography;
@@ -200,6 +209,92 @@ export default function FeeForSale() {
     setUserName(appLocalStorage.get(LOCAL_STORAGE_KEYS.NAME_USER));
   }, []);
 
+  const updateStatusBuyAccept = useMutation({
+    mutationFn: (body: any) => {
+      return AcceptBuy(body);
+    },
+    onSuccess: () => {
+      successToast('Successfully!');
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_SALE_BY_ID_USER],
+      });
+    },
+    onError() {
+      errorToast(API_MESSAGE.ERROR);
+    },
+  });
+
+  const handleSoldOut = useMutation({
+    mutationFn: (body: any) => {
+      return ConfirmBuy(body);
+    },
+    onSuccess: () => {
+      successToast('Successfully!');
+      queryClient.invalidateQueries({
+        queryKey: [API_NEW_FEEDS.GET_NEWS_FEED_SALE_BY_ID_USER],
+      });
+    },
+    onError() {
+      errorToast(API_MESSAGE.ERROR);
+    },
+  });
+
+  const listInterested = (data: any, newsFeedID: any) => {
+    return (
+      <List
+        style={{ width: '500px', zIndex: '999' }}
+        dataSource={data}
+        renderItem={(item: any) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={
+                <Avatar
+                  style={{
+                    verticalAlign: 'middle',
+                    marginRight: '10px',
+                  }}
+                  size={40}
+                  icon={<UserOutlined />}
+                />
+              }
+              title={item.userName}
+            />
+            <div>
+              <Switch
+                checked={item.status}
+                checkedChildren="Accept"
+                unCheckedChildren="Reject"
+                onChange={() => {
+                  updateStatusBuyAccept.mutate({
+                    newsFeedID: newsFeedID,
+                    userID: item.userId,
+                  });
+                }}
+                style={{ marginRight: '8px' }}
+                loading={updateStatusBuyAccept.isLoading}
+              />
+              <Button
+                onClick={() => {
+                  handleSoldOut.mutate({
+                    newsFeedID: newsFeedID,
+                    userID: item.userId,
+                  });
+                }}
+                icon={<CheckOutlined />}
+                style={{
+                  cursor: 'pointer',
+                  display: item.status ? '' : 'none',
+                }}
+                disabled={!item.status}
+              >
+                Sold out
+              </Button>
+            </div>
+          </List.Item>
+        )}
+      />
+    );
+  };
   return (
     <div style={{ margin: '15px 0' }}>
       {getNewFeedMul.isLoading ? (
@@ -213,77 +308,112 @@ export default function FeeForSale() {
           .filter((filStatus: any) => filStatus.status === 1)
           .map((item: any) => {
             return (
-              <Row
-                key={item?.newsFeedID}
-                style={{ cursor: 'pointer' }}
-                onClick={() => showModal(item.newsFeedID)}
-              >
-                <Col span={24} style={{ marginBottom: '26px' }}>
-                  <Row gutter={24}>
-                    <Col span={8}>
-                      <Image
-                        style={{ height: '200px' }}
-                        src={item?.listImages[0]?.urlImage}
-                        alt="anh"
-                      />
-                    </Col>
-                    <Col span={16}>
-                      <Row>
-                        <Col
-                          span={24}
-                          style={{
-                            height: '100px',
-                            display: 'flex',
-                            alignItems: 'flex-start',
-                          }}
-                        >
-                          <Row>
-                            <Col span={24}>
-                              <Title level={3} style={{ marginBottom: '0px' }}>
-                                {item.title}
-                              </Title>
-                            </Col>
-                            <Col span={24}>
-                              <Title
-                                level={5}
-                                type="danger"
-                                style={{ marginTop: '0px' }}
-                              >
-                                {`${item.price}`.replace(
-                                  /\B(?=(\d{3})+(?!\d))/g,
-                                  ','
-                                ) + ' VND'}
-                              </Title>
-                            </Col>
-                          </Row>
-                        </Col>
-                        <Col
-                          span={24}
-                          style={{
-                            height: '100px',
-                            display: 'flex',
-                            alignItems: 'flex-end',
-                          }}
-                        >
-                          <Avatar
+              <>
+                <Row
+                  key={item?.newsFeedID}
+                  style={{ cursor: 'pointer', position: 'relative' }}
+                >
+                  <Col
+                    className="item"
+                    span={24}
+                    style={{ marginBottom: '26px' }}
+                  >
+                    <Row gutter={24}>
+                      <Col span={8}>
+                        <Image
+                          onClick={() => showModal(item.newsFeedID)}
+                          style={{ height: '200px' }}
+                          src={item?.listImages[0]?.urlImage}
+                          alt="anh"
+                        />
+                      </Col>
+                      <Col span={13}>
+                        <Row>
+                          <Col
+                            span={24}
                             style={{
-                              verticalAlign: 'middle',
-                              marginRight: '8px',
+                              height: '100px',
+                              display: 'flex',
+                              alignItems: 'flex-start',
                             }}
-                            size={25}
-                            icon={<UserOutlined />}
-                          />
+                          >
+                            <Row>
+                              <Col span={24}>
+                                <Title
+                                  level={3}
+                                  style={{
+                                    marginBottom: '0px',
+                                    cursor: 'pointer',
+                                  }}
+                                  onClick={() => showModal(item.newsFeedID)}
+                                >
+                                  {item.title}
+                                </Title>
+                              </Col>
+                              <Col span={24}>
+                                <Title
+                                  level={5}
+                                  type="danger"
+                                  style={{ marginTop: '0px' }}
+                                >
+                                  {`${item.price}`.replace(
+                                    /\B(?=(\d{3})+(?!\d))/g,
+                                    ','
+                                  ) + ' VND'}
+                                </Title>
+                              </Col>
+                            </Row>
+                          </Col>
+                          <Col
+                            span={24}
+                            style={{
+                              height: '100px',
+                              display: 'flex',
+                              alignItems: 'flex-end',
+                            }}
+                          >
+                            <Avatar
+                              style={{
+                                verticalAlign: 'middle',
+                                marginRight: '8px',
+                              }}
+                              size={25}
+                              icon={<UserOutlined />}
+                            />
 
-                          <Text type="secondary">{item.userName}</Text>
-                          <Text type="secondary">
-                            - {formatDate(Number(item.insertDated))}
-                          </Text>
-                        </Col>
-                      </Row>
-                    </Col>
-                  </Row>
-                </Col>
-              </Row>
+                            <Text type="secondary">{item.userName}</Text>
+                            <Text type="secondary">
+                              - {formatDate(Number(item.insertDated))}
+                            </Text>
+                          </Col>
+                        </Row>
+                      </Col>
+                      <Col span={3}>
+                        <Popover
+                          placement="bottomRight"
+                          title={''}
+                          content={listInterested(
+                            item.userInteresteds || [],
+                            item.newsFeedID
+                          )}
+                        >
+                          <Button>Interested</Button>
+                        </Popover>
+                      </Col>
+                    </Row>
+                  </Col>
+                </Row>
+                {/* <Image
+                  src="/images/soldOut.jpeg"
+                  alt="sold out"
+                  preview={false}
+                  style={{
+                    width: 200,
+                    position: 'absolute',
+                    transform: 'translate(100%, -120%)',
+                  }}
+                /> */}
+              </>
             );
           })
       )}

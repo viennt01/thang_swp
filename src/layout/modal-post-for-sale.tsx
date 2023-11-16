@@ -93,7 +93,7 @@ export default function ModalPostForSale() {
     setIsLoadingSubmit(true);
     const data = {
       userID: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
-      typeGoodsID: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+      typeGoodsID: '3aaaaaaa-bbbb-cccc-dddd-2eeeeeeeeeee',
       unit: formValues.Uint,
       quantity: formValues.quantity,
       title: formValues.Title,
@@ -141,6 +141,7 @@ export default function ModalPostForSale() {
       }
     );
   };
+
   useEffect(() => {
     setUserName(appLocalStorage.get(LOCAL_STORAGE_KEYS.NAME_USER));
   }, []);
