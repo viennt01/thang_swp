@@ -43,28 +43,6 @@ export const GetSold = (data: any) => {
   })(API_NEW_FEEDS.GET_SOLD);
 };
 
-export const GetSale = (data: any) => {
-  return post<any, any>({
-    data: {
-      userID: data,
-      search: '',
-      currentPage: 1,
-      pageSize: 100,
-    },
-  })(API_NEW_FEEDS.GET_SALE);
-};
-
-export const GetCanBuy = (data: any) => {
-  return post<any, any>({
-    data: {
-      userID: data,
-      search: '',
-      currentPage: 1,
-      pageSize: 100,
-    },
-  })(API_NEW_FEEDS.GET_CAN_BUY);
-};
-
 export const AcceptBuy = (data: any) => {
   return post<any, any>({
     data,

@@ -8,6 +8,7 @@ import FeeForSale from './feed-for-sale';
 import style from './index.module.scss';
 import Sold from './sold';
 import Sale from './sale';
+import CanBuy from './can-buy';
 
 const { Text } = Typography;
 export default function Profile() {
@@ -123,6 +124,11 @@ export default function Profile() {
                           label: 'Buy',
                           key: 'Buy',
                           children: <Sale />,
+                        },
+                        {
+                          label: 'Can Buy',
+                          key: 'Can Buy',
+                          children: <CanBuy />,
                         },
                       ]}
                     />

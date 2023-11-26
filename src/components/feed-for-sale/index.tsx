@@ -4,16 +4,17 @@ import { useQuery } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
 import { GetNewFeedForSale } from './fetcher';
 import { formatDate } from '@/utils/format';
-import router from 'next/router';
 import { ROUTERS } from '@/constant/router';
 import { UserOutlined } from '@ant-design/icons';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
+import { useRouter } from 'next/router';
 
 const { Title, Text } = Typography;
 
 export default function FeeForSale() {
   const [data, setData] = useState([]);
+  const router = useRouter();
   const [keySearch, setKeySearch] = useState('');
 
   useEffect(() => {

@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Avatar, Col, Image, Row, Spin, Typography } from 'antd';
 import { useQuery } from '@tanstack/react-query';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
-import { GetSold } from './fetcher';
 import { formatDate } from '@/utils/format';
 import { UserOutlined } from '@ant-design/icons';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
+import { GetCanBuy } from '../sold/fetcher';
+import { ROUTERS } from '@/constant/router';
+import { useRouter } from 'next/router';
 
 const { Title, Text } = Typography;
 
@@ -15,12 +17,13 @@ export interface image {
   urlImage: string;
 }
 
-export default function Sold() {
+export default function CanBuy() {
   const [data, setData] = useState([]);
+  const router = useRouter();
 
   const getNewFeedMul = useQuery({
-    queryKey: [API_NEW_FEEDS.GET_SOLD],
-    queryFn: () => GetSold(appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER)),
+    queryKey: [API_NEW_FEEDS.GET_CAN_BUY],
+    queryFn: () => GetCanBuy(appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER)),
     onSuccess: (data) => {
       setData(data.data);
     },
@@ -29,6 +32,10 @@ export default function Sold() {
   useEffect(() => {
     getNewFeedMul.isFetching;
   }, [getNewFeedMul.isFetching]);
+
+  const handleChangePageDetail = (value: any) => {
+    router.push(ROUTERS.FEE_FOR_SALE_DETAIL(value));
+  };
 
   return (
     <div style={{ margin: '15px 0' }}>
@@ -45,6 +52,7 @@ export default function Sold() {
               <Row
                 key={item?.newsFeedID}
                 style={{ cursor: 'pointer', position: 'relative' }}
+                onClick={() => handleChangePageDetail(item?.newsFeedID)}
               >
                 <Col
                   className="item"
@@ -112,11 +120,8 @@ export default function Sold() {
                             icon={<UserOutlined />}
                           />
 
+                          <Text type="secondary">{item.userName}</Text>
                           <Text type="secondary">
-                            {item.interestedUserName}{' '}
-                          </Text>
-                          <Text type="secondary">
-                            {' '}
                             - {formatDate(Number(item.insertDated))}
                           </Text>
                         </Col>
