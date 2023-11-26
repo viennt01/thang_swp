@@ -36,6 +36,7 @@ import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import { storage } from '../firebase/firebase';
 import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage';
 import { API_NEW_FEEDS } from '@/fetcherAxios/endpoint';
+import { formatNumber } from '@/utils/format';
 const { TextArea } = Input;
 const { Title, Text } = Typography;
 
@@ -221,16 +222,17 @@ export default function ModalPostForSale() {
                     message: 'Please input your price',
                   },
                 ]}
-                style={{ margin: 0 }}
+                style={{ margin: 0, width: '100%' }}
               >
-                <Input
-                  type="number"
+                <InputNumber
                   min={0}
                   prefix="₫"
                   suffix="VND"
                   size="large"
                   placeholder="Please input your price"
-                  allowClear
+                  style={{ width: '100%' }}
+                  formatter={(value) => formatNumber(Number(value) || 0)}
+                  parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
                 />
               </Form.Item>
             </Col>

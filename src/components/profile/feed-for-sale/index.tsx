@@ -25,7 +25,7 @@ import {
   GetNewFeedForSale,
   GetNewFeedForSaleById,
 } from './fetcher';
-import { formatDate } from '@/utils/format';
+import { formatDate, formatNumber } from '@/utils/format';
 import { UserOutlined } from '@ant-design/icons';
 import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
@@ -479,16 +479,17 @@ export default function FeeForSale() {
                     message: 'Please input your price',
                   },
                 ]}
-                style={{ margin: 0 }}
+                style={{ margin: 0, width: '100%' }}
               >
-                <Input
-                  type="number"
+                <InputNumber
                   min={0}
                   prefix="₫"
                   suffix="VND"
                   size="large"
                   placeholder="Please input your price"
-                  allowClear
+                  style={{ width: '100%' }}
+                  formatter={(value) => formatNumber(Number(value) || 0)}
+                  parser={(value: any) => value.replace(/\$\s?|(,*)/g, '')}
                 />
               </Form.Item>
             </Col>
