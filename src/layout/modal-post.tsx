@@ -91,7 +91,7 @@ export default function ModalPost() {
     setIsLoadingSubmit(true);
     const data = {
       userID: appLocalStorage.get(LOCAL_STORAGE_KEYS.ID_USER),
-      typeGoodsID: '3aaaaaaa-bbbb-cccc-dddd-2eeeeeeeeeee',
+      typeGoodsID: '7c9e6679-7425-40de-944b-e07fc1f90ae7',
       title: formValues.Title,
       content: formValues.Content,
       listImage: [linkFile],

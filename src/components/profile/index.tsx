@@ -6,6 +6,8 @@ import { appLocalStorage } from '@/utils/localstorage';
 import { LOCAL_STORAGE_KEYS } from '@/constant/localstorage';
 import FeeForSale from './feed-for-sale';
 import style from './index.module.scss';
+import Sold from './sold';
+import Sale from './sale';
 
 const { Text } = Typography;
 export default function Profile() {
@@ -111,6 +113,16 @@ export default function Profile() {
                           label: 'Feed for sale',
                           key: 'Feed for sale',
                           children: <FeeForSale />,
+                        },
+                        {
+                          label: 'Sold',
+                          key: 'Sold',
+                          children: <Sold />,
+                        },
+                        {
+                          label: 'Buy',
+                          key: 'Buy',
+                          children: <Sale />,
                         },
                       ]}
                     />

@@ -161,7 +161,11 @@ export default function Home() {
                   />
                 }
                 title={item?.title}
-                description={formatDate(Number(item?.insertDated))}
+                description={
+                  <div>
+                    {item?.userName} ({formatDate(Number(item?.insertDated))})
+                  </div>
+                }
               />
               {item.content}
             </List.Item>
