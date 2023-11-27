@@ -46,5 +46,5 @@ export const GetNewFeedForSale = () => {
 export const UpdateNewFeed = (data: any) => {
   return post<any, any>({
     data,
-  })(API_NEW_FEEDS.UPDATE_NEW_FEED_FOR_SALE);
+  })(API_NEW_FEEDS.UPDATE_NEW_FEED);
 };
